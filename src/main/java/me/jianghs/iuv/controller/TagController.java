@@ -8,6 +8,7 @@ import me.jianghs.iuv.controller.response.TagPageResponse;
 import me.jianghs.iuv.entity.Tag;
 import me.jianghs.iuv.mapper.TagMapper;
 import me.jianghs.iuv.service.ITagService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,7 +31,7 @@ public class TagController {
     public Page<Tag> page(@RequestBody TagPageRequest tagPageRequest) {
         Page<Tag> page = new Page<>(tagPageRequest.getCurrent(), tagPageRequest.getSize());
         LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.like(!"".equals(tagPageRequest.getTagName()), Tag::getTagName, tagPageRequest.getTagName());
+        queryWrapper.like(StringUtils.isNotBlank(tagPageRequest.getTagName()), Tag::getTagName, tagPageRequest.getTagName());
         queryWrapper.orderByAsc(Tag::getId);
         return tagService.page(page, queryWrapper);
     }
