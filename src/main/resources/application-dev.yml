@@ -1,0 +1,21 @@
+server:
+  port: 8867
+
+spring:
+  datasource:
+    db-type: h2
+    driver-class-name: org.h2.Driver
+    schema: classpath:db/h2/schema.sql
+#    data: classpath:db/h2/data.sql
+    url: jdbc:h2:mem:iuv
+    username: root
+    password: root
+  h2:
+    console:
+      enabled: true
+#      path: /h2-console
+
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
