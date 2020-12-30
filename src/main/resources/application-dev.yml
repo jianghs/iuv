@@ -6,7 +6,7 @@ spring:
     db-type: h2
     driver-class-name: org.h2.Driver
     schema: classpath:db/h2/schema.sql
-#    data: classpath:db/h2/data.sql
+    data: classpath:db/h2/data.sql
     url: jdbc:h2:mem:iuv
     username: root
     password: root
