@@ -5,7 +5,7 @@ import me.jianghs.iuv.common.enums.ResultCode;
 
 /**
  * @className: BaseException
- * @description: TODO
+ * @description:
  * @author: jianghs430
  * @createDate: 2020/8/18 9:30
  * @version: 1.0
