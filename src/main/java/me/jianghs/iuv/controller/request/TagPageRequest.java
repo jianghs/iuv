@@ -1,6 +1,7 @@
 package me.jianghs.iuv.controller.request;
 
 import lombok.Data;
+import me.jianghs.iuv.common.page.PageParam;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
@@ -13,10 +14,7 @@ import java.io.Serializable;
  * @version: 1.0
  */
 @Data
-public class TagPageRequest implements Serializable {
-    private Long current;
-    private Long size;
-
+public class TagPageRequest extends PageParam {
     /**
      * 标签名
      */

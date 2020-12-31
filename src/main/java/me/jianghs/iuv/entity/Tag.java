@@ -68,5 +68,4 @@ public class Tag implements Serializable {
      */
     private Long modifierId;
 
-
 }
