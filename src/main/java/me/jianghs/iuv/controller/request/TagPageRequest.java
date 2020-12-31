@@ -2,9 +2,8 @@ package me.jianghs.iuv.controller.request;
 
 import lombok.Data;
 import me.jianghs.iuv.common.page.PageParam;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @className: TagPageRequest
@@ -18,6 +17,7 @@ public class TagPageRequest extends PageParam {
     /**
      * 标签名
      */
+    @NotBlank(message = "标签名不得为空")
     private String tagName;
 
 }
