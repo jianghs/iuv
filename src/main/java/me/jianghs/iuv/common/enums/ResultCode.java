@@ -14,6 +14,7 @@ public enum ResultCode {
     SUCCESS(1000, "操作成功"),
     FAILED(1001, "响应失败"),
     VALIDATE_FAILED(1002, "参数校验失败"),
+    PARAM_CONVERT_FAILED(1003, "参数转换失败"),
     ERROR(5000, "未知错误");
     private int code;
 

@@ -1,6 +1,7 @@
 package me.jianghs.iuv.common.converter;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import me.jianghs.iuv.common.page.PageResult;
 import org.mapstruct.MapperConfig;
 
 /**
@@ -18,11 +19,11 @@ public interface PageMapping<SOURCE, TARGET> extends BaseMapping<SOURCE, TARGET>
      * @param source
      * @return
      */
-    default Page<TARGET> pageCopy(Page<SOURCE> source) {
+    default PageResult<TARGET> pageCopy(Page<SOURCE> source) {
         if (source == null) {
             return null;
         }
-        Page<TARGET> target = new Page<>();
+        PageResult<TARGET> target = new PageResult<>();
         target.setSize(source.getSize());
         target.setTotal(source.getTotal());
         target.setPages(source.getPages());

@@ -3,6 +3,9 @@ package me.jianghs.iuv.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import me.jianghs.iuv.common.page.PageResult;
 import me.jianghs.iuv.common.result.Result;
 import me.jianghs.iuv.controller.converter.TagPageConverter;
 import me.jianghs.iuv.controller.request.TagPageRequest;
@@ -23,6 +26,7 @@ import javax.annotation.Resource;
  * @author jianghs
  * @since 2020-12-30
  */
+@Slf4j
 @RestController
 @RequestMapping("/iuv/tag")
 public class TagController {
@@ -30,14 +34,16 @@ public class TagController {
     private ITagService tagService;
 
     @PostMapping("/page")
-    public Page<TagPageResponse> page(@RequestBody @Valid TagPageRequest tagPageRequest) {
+    public PageResult<TagPageResponse> page(@RequestBody @Valid TagPageRequest tagPageRequest) {
+        log.info("请求：{}", tagPageRequest);
         Page<Tag> page = new Page<>(tagPageRequest.getCurrent(), tagPageRequest.getSize());
         LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.isNotBlank(tagPageRequest.getTagName()), Tag::getTagName, tagPageRequest.getTagName());
         queryWrapper.orderByAsc(Tag::getId);
         Page<Tag> tagPage = tagService.page(page, queryWrapper);
-
-        return TagPageConverter.INSTANCE.pageCopy(tagPage);
+        PageResult<TagPageResponse> pageResult = TagPageConverter.INSTANCE.pageCopy(tagPage);
+        log.info("返回：{}", pageResult);
+        return pageResult;
     }
 }
 
