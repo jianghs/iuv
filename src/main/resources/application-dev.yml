@@ -13,7 +13,21 @@ spring:
   h2:
     console:
       enabled: true
-#      path: /h2-console
+  #      path: /h2-console
+
+  redis:
+    database: 0
+    host: 139.196.190.46
+    port: 6379
+    password:
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
+        max-wait: -1
+
 
 
 mybatis-plus:

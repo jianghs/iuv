@@ -5,11 +5,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import me.jianghs.iuv.common.annotation.RedisCache;
+import me.jianghs.iuv.common.cache.redis.RedisUtil;
 import me.jianghs.iuv.common.page.PageResult;
 import me.jianghs.iuv.common.result.Result;
+import me.jianghs.iuv.controller.converter.TagConverter;
 import me.jianghs.iuv.controller.converter.TagPageConverter;
 import me.jianghs.iuv.controller.request.TagPageRequest;
 import me.jianghs.iuv.controller.response.TagPageResponse;
+import me.jianghs.iuv.controller.response.TagResponse;
 import me.jianghs.iuv.entity.Tag;
 import me.jianghs.iuv.service.ITagService;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.annotation.Resource;
+import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 /**
  * <p>
@@ -44,6 +50,15 @@ public class TagController {
         PageResult<TagPageResponse> pageResult = TagPageConverter.INSTANCE.pageCopy(tagPage);
         log.info("返回：{}", pageResult);
         return pageResult;
+    }
+
+    @PostMapping("/detail")
+    public TagResponse detail(@RequestParam("id") @NotBlank(message = "id不得为空") Long id) {
+        log.info("请求：{}", id);
+        Tag tag = tagService.detail(id);
+        TagResponse tagResponse = TagConverter.INSTANCE.sourceToTarget(tag);
+        log.info("返回：{}", tagResponse);
+        return tagResponse;
     }
 }
 

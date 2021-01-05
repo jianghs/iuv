@@ -13,4 +13,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITagService extends IService<Tag> {
 
+    /**
+     * 详情
+     * @param id
+     * @return
+     */
+    Tag detail(long id);
 }

@@ -1,9 +1,9 @@
 package me.jianghs.iuv.controller.converter;
 
 import me.jianghs.iuv.common.converter.BaseMapping;
-import me.jianghs.iuv.controller.response.TagPageResponse;
+import me.jianghs.iuv.controller.response.TagResponse;
 import me.jianghs.iuv.entity.Tag;
-import org.mapstruct.MapperConfig;
+import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -13,8 +13,8 @@ import org.mapstruct.factory.Mappers;
  * @createDate: 2020/12/31 9:26
  * @version: 1.0
  */
-@MapperConfig
-public interface TagConverter extends BaseMapping<Tag, TagPageResponse> {
+@Mapper
+public interface TagConverter extends BaseMapping<Tag, TagResponse> {
 
     TagConverter INSTANCE = Mappers.getMapper(TagConverter.class);
 

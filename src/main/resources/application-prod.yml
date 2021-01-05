@@ -14,3 +14,15 @@ spring:
       idle-timeout: 600000
       connection-timeout: 30000
       connection-test-query: select 1
+  redis:
+    database: 0
+    host: 139.196.190.46
+    port: 6379
+    password:
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
+        max-wait: -1
