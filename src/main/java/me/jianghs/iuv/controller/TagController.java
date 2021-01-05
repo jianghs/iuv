@@ -45,6 +45,12 @@ public class TagController {
         Page<Tag> page = new Page<>(tagPageRequest.getCurrent(), tagPageRequest.getSize());
         LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.isNotBlank(tagPageRequest.getTagName()), Tag::getTagName, tagPageRequest.getTagName());
+        // 大于等于 开始时间
+        queryWrapper.ge(Objects.nonNull(tagPageRequest.getStart()) && Objects.isNull(tagPageRequest.getEnd()), Tag::getCreateTime, tagPageRequest.getStart());
+        // 小于等于 结束时间
+        queryWrapper.le(Objects.isNull(tagPageRequest.getStart()) && Objects.nonNull(tagPageRequest.getEnd()), Tag::getCreateTime, tagPageRequest.getEnd());
+        // 大于等于 开始时间 小于等于 结束时间
+        queryWrapper.between(Objects.nonNull(tagPageRequest.getStart()) && Objects.nonNull(tagPageRequest.getEnd()), Tag::getCreateTime, tagPageRequest.getStart(), tagPageRequest.getEnd());
         queryWrapper.orderByAsc(Tag::getId);
         Page<Tag> tagPage = tagService.page(page, queryWrapper);
         PageResult<TagPageResponse> pageResult = TagPageConverter.INSTANCE.pageCopy(tagPage);
