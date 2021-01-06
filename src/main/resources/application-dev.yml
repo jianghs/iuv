@@ -2,6 +2,8 @@ server:
   port: 8867
 
 spring:
+  application:
+    name: iuv
   datasource:
     db-type: h2
     driver-class-name: org.h2.Driver
@@ -33,3 +35,11 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# ===== 自定义swagger配置 ===== #
+knife4j-swagger:
+  enable: true
+  application-name: ${spring.application.name}
+  application-version: 1.0
+  application-description: for my baby
+  try-host: http://localhost:${server.port}

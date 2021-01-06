@@ -3,12 +3,11 @@ package me.jianghs.iuv.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import me.jianghs.iuv.common.annotation.RedisCache;
-import me.jianghs.iuv.common.cache.redis.RedisUtil;
 import me.jianghs.iuv.common.page.PageResult;
-import me.jianghs.iuv.common.result.Result;
 import me.jianghs.iuv.controller.converter.TagConverter;
 import me.jianghs.iuv.controller.converter.TagPageConverter;
 import me.jianghs.iuv.controller.converter.TagRequestConverter;
@@ -35,6 +34,7 @@ import java.util.Objects;
  * @author jianghs
  * @since 2020-12-30
  */
+@Api(value = "/iuv/tag", tags = "标签模块")
 @Slf4j
 @RestController
 @RequestMapping("/iuv/tag")
@@ -42,6 +42,7 @@ public class TagController {
     @Resource
     private ITagService tagService;
 
+    @ApiOperation(value = "分页")
     @PostMapping("/page")
     public PageResult<TagPageResponse> page(@RequestBody @Valid TagPageRequest tagPageRequest) {
         log.info("请求：{}", tagPageRequest);
@@ -61,6 +62,8 @@ public class TagController {
         return pageResult;
     }
 
+    @ApiOperation(value = "详情")
+    @ApiImplicitParam(name = "id",value = "主键",required = true)
     @PostMapping("/detail")
     public TagResponse detail(@RequestParam("id") @NotBlank(message = "id不得为空") Long id) {
         log.info("请求：{}", id);
@@ -70,6 +73,7 @@ public class TagController {
         return tagResponse;
     }
 
+    @ApiOperation(value = "列表")
     @PostMapping("/list")
     public List<TagResponse> list() {
         List<Tag> tagList = tagService.list();
@@ -78,20 +82,27 @@ public class TagController {
         return tagResponseList;
     }
 
+    @ApiOperation(value = "新增")
     @PostMapping("/add")
     public void add(@RequestBody TagRequest  tagRequest) {
+        log.info("请求：{}", tagRequest);
         Tag tag = TagRequestConverter.INSTANCE.sourceToTarget(tagRequest);
         tagService.addTag(tag);
     }
 
+    @ApiOperation(value = "更新")
     @PostMapping("/update")
     public void update(@RequestBody TagRequest  tagRequest) {
+        log.info("请求：{}", tagRequest);
         Tag tag = TagRequestConverter.INSTANCE.sourceToTarget(tagRequest);
         tagService.updateTag(tag);
     }
 
+    @ApiOperation(value = "删除")
+    @ApiImplicitParam(name = "id",value = "主键",required = true)
     @PostMapping("/delete")
     public void delete(@RequestParam("id") @NotBlank(message = "id不得为空") Long id) {
+        log.info("请求：{}", id);
         tagService.delete(id);
     }
 }

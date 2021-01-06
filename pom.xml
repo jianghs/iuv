@@ -23,6 +23,7 @@
         <guava.version>29.0-jre</guava.version>
         <commons.lang3.version>3.11</commons.lang3.version>
         <commons.collections4.version>4.4</commons.collections4.version>
+        <knife4j.version>3.0.2</knife4j.version>
     </properties>
 
     <dependencies>
@@ -31,6 +32,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!-- knife4j:swagger 增强版 -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
+        </dependency>
+
 
         <!-- controller 参数校验 -->
         <dependency>

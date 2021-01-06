@@ -2,6 +2,8 @@ server:
   port: 8867
 
 spring:
+  application:
+    name: iuv
   datasource:
     db-type: mysql
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -26,3 +28,11 @@ spring:
         min-idle: 0
         max-idle: 8
         max-wait: -1
+
+# ===== 自定义swagger配置 ===== #
+knife4j-swagger:
+  enable: true
+  application-name: ${spring.application.name}
+  application-version: 1.0
+  application-description: for my baby
+  try-host: http://localhost:${server.port}

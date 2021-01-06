@@ -26,7 +26,6 @@ public interface PageMapping<SOURCE, TARGET> extends BaseMapping<SOURCE, TARGET>
         PageResult<TARGET> target = new PageResult<>();
         target.setSize(source.getSize());
         target.setTotal(source.getTotal());
-        target.setPages(source.getPages());
         target.setCurrent(source.getCurrent());
         target.setRecords(this.sourceToTarget(source.getRecords()));
         return target;
