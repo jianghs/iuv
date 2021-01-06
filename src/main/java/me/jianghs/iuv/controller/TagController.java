@@ -11,7 +11,9 @@ import me.jianghs.iuv.common.page.PageResult;
 import me.jianghs.iuv.common.result.Result;
 import me.jianghs.iuv.controller.converter.TagConverter;
 import me.jianghs.iuv.controller.converter.TagPageConverter;
+import me.jianghs.iuv.controller.converter.TagRequestConverter;
 import me.jianghs.iuv.controller.request.TagPageRequest;
+import me.jianghs.iuv.controller.request.TagRequest;
 import me.jianghs.iuv.controller.response.TagPageResponse;
 import me.jianghs.iuv.controller.response.TagResponse;
 import me.jianghs.iuv.entity.Tag;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -65,6 +68,31 @@ public class TagController {
         TagResponse tagResponse = TagConverter.INSTANCE.sourceToTarget(tag);
         log.info("返回：{}", tagResponse);
         return tagResponse;
+    }
+
+    @PostMapping("/list")
+    public List<TagResponse> list() {
+        List<Tag> tagList = tagService.list();
+        List<TagResponse> tagResponseList = TagConverter.INSTANCE.sourceToTarget(tagList);
+        log.info("返回：{}", tagResponseList);
+        return tagResponseList;
+    }
+
+    @PostMapping("/add")
+    public void add(@RequestBody TagRequest  tagRequest) {
+        Tag tag = TagRequestConverter.INSTANCE.sourceToTarget(tagRequest);
+        tagService.addTag(tag);
+    }
+
+    @PostMapping("/update")
+    public void update(@RequestBody TagRequest  tagRequest) {
+        Tag tag = TagRequestConverter.INSTANCE.sourceToTarget(tagRequest);
+        tagService.updateTag(tag);
+    }
+
+    @PostMapping("/delete")
+    public void delete(@RequestParam("id") @NotBlank(message = "id不得为空") Long id) {
+        tagService.delete(id);
     }
 }
 

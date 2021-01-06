@@ -84,10 +84,22 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
-        <!-- lettuce pool 缓存连接池-->
+        <!-- Redis lettuce pool 缓存连接池-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!-- SpringBoot 本地缓存 引入 Caffeine 和 Spring Cache 依赖，使用 SpringCache 注解方法实现缓存。 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
+        <!-- SpringBoot 本地缓存：caffeine 解决方案 -->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
         </dependency>
 
         <dependency>
@@ -110,6 +122,7 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- util 通用包 -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>

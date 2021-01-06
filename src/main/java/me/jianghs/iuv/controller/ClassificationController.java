@@ -17,5 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/iuv/classification")
 public class ClassificationController {
 
+
+
 }
 
