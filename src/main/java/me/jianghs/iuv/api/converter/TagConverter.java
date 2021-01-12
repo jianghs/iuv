@@ -1,7 +1,7 @@
-package me.jianghs.iuv.controller.converter;
+package me.jianghs.iuv.api.converter;
 
 import me.jianghs.iuv.common.converter.BaseMapping;
-import me.jianghs.iuv.controller.response.TagResponse;
+import me.jianghs.iuv.api.response.TagResponse;
 import me.jianghs.iuv.entity.Tag;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

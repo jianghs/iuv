@@ -1,4 +1,4 @@
-package me.jianghs.iuv.controller.response;
+package me.jianghs.iuv.api.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

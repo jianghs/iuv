@@ -1,4 +1,4 @@
-package me.jianghs.iuv.controller.advice;
+package me.jianghs.iuv.api.advice;
 
 import lombok.extern.slf4j.Slf4j;
 import me.jianghs.iuv.common.enums.ResultCode;

@@ -2,5 +2,5 @@ spring:
   application:
     name: iuv
   profiles:
-    active: prod
+    active: dev
 

@@ -29,8 +29,15 @@ spring:
         min-idle: 0
         max-idle: 8
         max-wait: -1
-
-
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    mode: HTML
+    cache: false
 
 mybatis-plus:
   configuration:
@@ -43,3 +50,17 @@ knife4j-swagger:
   application-version: 1.0
   application-description: for my baby
   try-host: http://localhost:${server.port}
+
+logging:
+  level:
+    me.jianghs.iuv: debug
+    org.springframework.boot.autoconfigure.security: debug
+#shiro:
+#  sessionManager:
+#    sessionIdCookieEnabled: true
+#    sessionIdUrlRewritingEnabled: true
+#  unauthorizedUrl: /unauthorizedurl
+#  web:
+#    enabled: true
+#  successUrl: /index
+#  loginUrl: /login

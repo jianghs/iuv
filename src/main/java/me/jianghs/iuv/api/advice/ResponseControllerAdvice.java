@@ -1,4 +1,4 @@
-package me.jianghs.iuv.controller.advice;
+package me.jianghs.iuv.api.advice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +21,7 @@ import java.lang.reflect.Type;
  * @createDate: 2020/8/18 10:25
  * @version: 1.0
  */
-@RestControllerAdvice(basePackages = {"me.jianghs.iuv.controller"})
+@RestControllerAdvice(basePackages = {"me.jianghs.iuv.api"})
 public class ResponseControllerAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> aClass) {

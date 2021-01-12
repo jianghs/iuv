@@ -28,6 +28,15 @@ spring:
         min-idle: 0
         max-idle: 8
         max-wait: -1
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    mode: HTML
+    cache: true
 
 # ===== 自定义swagger配置 ===== #
 knife4j-swagger:

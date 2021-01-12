@@ -1,4 +1,4 @@
-package me.jianghs.iuv.controller;
+package me.jianghs.iuv.api;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -8,13 +8,13 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.jianghs.iuv.common.page.PageResult;
-import me.jianghs.iuv.controller.converter.TagConverter;
-import me.jianghs.iuv.controller.converter.TagPageConverter;
-import me.jianghs.iuv.controller.converter.TagRequestConverter;
-import me.jianghs.iuv.controller.request.TagPageRequest;
-import me.jianghs.iuv.controller.request.TagRequest;
-import me.jianghs.iuv.controller.response.TagPageResponse;
-import me.jianghs.iuv.controller.response.TagResponse;
+import me.jianghs.iuv.api.converter.TagConverter;
+import me.jianghs.iuv.api.converter.TagPageConverter;
+import me.jianghs.iuv.api.converter.TagRequestConverter;
+import me.jianghs.iuv.api.request.TagPageRequest;
+import me.jianghs.iuv.api.request.TagRequest;
+import me.jianghs.iuv.api.response.TagPageResponse;
+import me.jianghs.iuv.api.response.TagResponse;
 import me.jianghs.iuv.entity.Tag;
 import me.jianghs.iuv.service.ITagService;
 import org.apache.commons.lang3.StringUtils;
@@ -34,10 +34,10 @@ import java.util.Objects;
  * @author jianghs
  * @since 2020-12-30
  */
-@Api(value = "/iuv/tag", tags = "标签模块")
+@Api(value = "/api/tag", tags = "标签模块")
 @Slf4j
 @RestController
-@RequestMapping("/iuv/tag")
+@RequestMapping("/api/tag")
 public class TagController {
     @Resource
     private ITagService tagService;
@@ -63,7 +63,7 @@ public class TagController {
     }
 
     @ApiOperation(value = "详情")
-    @ApiImplicitParam(name = "id",value = "主键",required = true)
+    @ApiImplicitParam(name = "id",value = "主键",required = true, dataType = "Long", dataTypeClass = Long.class)
     @PostMapping("/detail")
     public TagResponse detail(@RequestParam("id") @NotBlank(message = "id不得为空") Long id) {
         log.info("请求：{}", id);
@@ -99,7 +99,7 @@ public class TagController {
     }
 
     @ApiOperation(value = "删除")
-    @ApiImplicitParam(name = "id",value = "主键",required = true)
+    @ApiImplicitParam(name = "id",value = "主键",required = true, dataType = "Long", dataTypeClass = Long.class)
     @PostMapping("/delete")
     public void delete(@RequestParam("id") @NotBlank(message = "id不得为空") Long id) {
         log.info("请求：{}", id);

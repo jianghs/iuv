@@ -1,11 +1,10 @@
-package me.jianghs.iuv.controller.request;
+package me.jianghs.iuv.api.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import me.jianghs.iuv.common.page.PageParam;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 /**
