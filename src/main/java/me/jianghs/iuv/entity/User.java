@@ -30,6 +30,16 @@ public class User implements Serializable {
     private Long id;
 
     /**
+     * 用户名
+     */
+    private String userName;
+
+    /**
+     * 密码
+     */
+    private String password;
+
+    /**
      * 昵称
      */
     private String nickname;
@@ -78,11 +88,6 @@ public class User implements Serializable {
      * 允许评论状态 0-关闭 1-开启
      */
     private Integer commentStatus;
-
-    /**
-     * 密码
-     */
-    private String password;
 
     /**
      * 登录次数
