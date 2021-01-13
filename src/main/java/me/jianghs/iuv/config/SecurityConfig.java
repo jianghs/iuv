@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .headers().frameOptions().disable()
                 .and();
+
         http
                 //表单登录
                 .formLogin()
@@ -51,6 +52,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/loginError")
                 .permitAll()
                 .and();
+
+        http
+                // 退出
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/loginPage?logout")
+                .and();
+
         http
                 // 授权配置
                 .authorizeRequests()
