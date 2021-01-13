@@ -148,6 +148,8 @@ create table iuv_user
 (
     id                   bigint auto_increment comment '主键'
         primary key,
+    user_name            varchar(255)  default ''                not null comment '用户名',
+    password             varchar(255)  default ''                null comment '密码',
     nickname             varchar(255)  default ''                not null comment '昵称',
     avatar_url           varchar(2000) default ''                null comment '头像url',
     sex                  tinyint       default 1                 not null comment '性别 1-男 2-女',
@@ -158,7 +160,6 @@ create table iuv_user
     introduction         varchar(2000) default ''                null comment '简介',
     comment_email_notice tinyint       default 1                 not null comment '评论邮件通知 0-关闭 1-开启',
     comment_status       tinyint       default 1                 not null comment '允许评论状态 0-关闭 1-开启',
-    password             varchar(255)  default ''                null comment '密码',
     login_times          bigint        default 0                 not null comment '登录次数',
     last_login_time      timestamp     default CURRENT_TIMESTAMP not null comment '最后登录时间',
     login_ip             varchar(255)  default ''                not null comment '登录ip',
