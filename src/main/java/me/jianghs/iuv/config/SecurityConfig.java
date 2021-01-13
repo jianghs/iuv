@@ -30,8 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 安全拦截
-     * @param http
-     * @throws Exception
+     * @param http httpSecurity
+     * @throws Exception 异常
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
