@@ -2,6 +2,7 @@ package me.jianghs.iuv.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
@@ -61,10 +63,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and();
 
         http
-                // 授权配置
+                // web授权配置，具体规则优先
                 .authorizeRequests()
-                .antMatchers("/resources/r1").hasAuthority("2")
-                .antMatchers("/resources/r2").hasAuthority("3")
+//                .antMatchers("/resources/r1").hasAuthority("2")
+//                .antMatchers("/resources/r2").hasAuthority("3")
                 //无需权限访问
                 .antMatchers( "/css/**", "/error404").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
