@@ -141,8 +141,9 @@ public class MybatisGenerator {
 //        strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
         // 写于父类中的公共字段
 //        strategy.setSuperEntityColumns("id");
-        strategy.setInclude("iuv_article", "iuv_classification", "iuv_comment", "iuv_leave_comment", "iuv_menu", "iuv_role",
-                "iuv_role_menu_relation", "iuv_subject", "iuv_tag", "iuv_user", "iuv_user_role_relation");
+//        strategy.setInclude("iuv_article", "iuv_classification", "iuv_comment", "iuv_leave_comment", "iuv_menu", "iuv_role",
+//                "iuv_role_menu_relation", "iuv_subject", "iuv_tag", "iuv_user", "iuv_user_role_relation");
+        strategy.setInclude("iuv_user");
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);

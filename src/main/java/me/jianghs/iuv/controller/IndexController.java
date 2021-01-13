@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -40,11 +39,17 @@ public class IndexController {
         return "index";
     }
 
+    /**
+     * 登录
+     */
     @RequestMapping("/loginPage")
     public String login() {
         return "loginPage";
     }
 
+    /**
+     * 登录错误
+     */
     @RequestMapping("/loginError")
     public String error() {
         return "loginError";

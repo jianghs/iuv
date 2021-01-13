@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author jianghs
- * @since 2020-12-30
+ * @since 2021-01-13
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -78,6 +78,11 @@ public class User implements Serializable {
      * 允许评论状态 0-关闭 1-开启
      */
     private Integer commentStatus;
+
+    /**
+     * 密码
+     */
+    private String password;
 
     /**
      * 登录次数

@@ -158,6 +158,7 @@ create table iuv_user
     introduction         varchar(2000) default ''                null comment '简介',
     comment_email_notice tinyint       default 1                 not null comment '评论邮件通知 0-关闭 1-开启',
     comment_status       tinyint       default 1                 not null comment '允许评论状态 0-关闭 1-开启',
+    password             varchar(255)  default ''                null comment '密码',
     login_times          bigint        default 0                 not null comment '登录次数',
     last_login_time      timestamp     default CURRENT_TIMESTAMP not null comment '最后登录时间',
     login_ip             varchar(255)  default ''                not null comment '登录ip',

@@ -7,7 +7,7 @@
 1. mapstruct
 1. swagger
 1. redis
-1. 本地缓存
+1. 本地缓存（caffeine）
 1. rabbitmq?
 1. dubbo?
 1. jwt/shiro?
