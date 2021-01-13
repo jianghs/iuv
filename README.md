@@ -13,3 +13,4 @@
 1. jwt/shiro?
 1. es?
 1. mongodb?
+1. 文件存储
