@@ -5,11 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 /**
  * @className: SecurityConfig
@@ -23,24 +20,11 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
-     * 定义用户信息服务
-     * @return
-     */
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("马波").password("123").authorities("p1").build());
-        manager.createUser(User.withUsername("牛仔").password("111").authorities("p2").build());
-        return manager;
-    }
-
-    /**
      * 密码编码器
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 
     /**
@@ -69,8 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 // 授权配置
                 .authorizeRequests()
-                .antMatchers("/resources/r1").hasAuthority("p1")
-                .antMatchers("/resources/r2").hasAuthority("p2")
+                .antMatchers("/resources/r1").hasAuthority("2")
+                .antMatchers("/resources/r2").hasAuthority("3")
                 //无需权限访问
                 .antMatchers( "/css/**", "/error404").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
