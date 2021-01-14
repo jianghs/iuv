@@ -11,6 +11,10 @@
   <link rel="stylesheet" type="text/css" href="/plugins/fontawesome-free/css/all.min.css">
   <!-- icheck bootstrap -->
   <link rel="stylesheet" type="text/css" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" type="text/css" href="/css/adminlte.min.css">
 </head>
@@ -26,7 +30,7 @@
 
       <form action="/form" method="post">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="用户名" name="username">
+          <input type="text" class="form-control" placeholder="用户名" name="username" id="username">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -34,7 +38,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="密码" name="password">
+          <input type="password" class="form-control" placeholder="密码" name="password" id="password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -104,8 +108,18 @@
     });
 
     $('#login-button').click(function() {
+      if ($('#username').val() === '') {
+        // alert('用户名不得为空！');
+        toastr.error('用户名不得为空！')
+        return;
+      }
+      if ($('#password').val() === '') {
+        // alert('密码不得为空！');
+        toastr.error('密码不得为空！')
+        return;
+      }
       toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
-      toastr.error('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+
     });
   });
 </script>

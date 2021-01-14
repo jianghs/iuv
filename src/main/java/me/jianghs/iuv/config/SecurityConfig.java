@@ -51,25 +51,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/form")
                 //成功登陆后跳转页面
                 .defaultSuccessUrl("/index")
-                .failureUrl("/loginError")
+                .failureUrl("/login?error")
                 .permitAll()
                 .and();
 
-        http
-                // 退出
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
-                .and();
+//        http
+//                // 退出
+//                .logout()
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/login?logout")
+//                .and();
 
         http
                 // web授权配置，具体规则优先
                 .authorizeRequests()
 //                .antMatchers("/resources/r1").hasAuthority("2")
 //                .antMatchers("/resources/r2").hasAuthority("3")
-                //无需权限访问
+                // 静态文件无需权限访问
                 .antMatchers( "/css/**", "/fonts/**","/img/**","/js/**","/plugins/**").permitAll()
-                //其他接口需要登录后才能访问
+                // 其他接口需要登录后才能访问
                 .anyRequest().authenticated()
                 .and();
 
