@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //表单登录
                 .formLogin()
                 // 自定义登录页面
-                .loginPage("/loginPage")
+                .loginPage("/login")
                 .loginProcessingUrl("/form")
                 //成功登陆后跳转页面
                 .defaultSuccessUrl("/index")
@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 退出
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/loginPage?logout")
+                .logoutSuccessUrl("/login?logout")
                 .and();
 
         http
@@ -68,8 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/resources/r1").hasAuthority("2")
 //                .antMatchers("/resources/r2").hasAuthority("3")
                 //无需权限访问
-                .antMatchers( "/css/**", "/error404").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers( "/css/**", "/fonts/**","/img/**","/js/**","/plugins/**").permitAll()
                 //其他接口需要登录后才能访问
                 .anyRequest().authenticated()
                 .and();

@@ -48,9 +48,9 @@ public class IndexController {
     /**
      * 登录
      */
-    @RequestMapping("/loginPage")
+    @RequestMapping("/login")
     public String login() {
-        return "loginPage";
+        return "login";
     }
 
     /**

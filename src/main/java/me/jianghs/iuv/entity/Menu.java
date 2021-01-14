@@ -35,6 +35,11 @@ public class Menu implements Serializable {
     private Long parentId;
 
     /**
+     * 菜单编码
+     */
+    private String menuCode;
+
+    /**
      * 菜单名称
      */
     private String menuName;
