@@ -1,5 +1,6 @@
-package me.jianghs.iuv.config;
+package me.jianghs.iuv.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,6 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private AppAuthenticationSuccessHandler appAuthenticationSuccessHandler;
+
     /**
      * 密码编码器
      */
@@ -29,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
     /**
      * 安全拦截
@@ -51,16 +56,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/form")
                 //成功登陆后跳转页面
                 .defaultSuccessUrl("/index")
+                .successHandler(appAuthenticationSuccessHandler)
                 .failureUrl("/login?error")
                 .permitAll()
                 .and();
 
-//        http
-//                // 退出
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/login?logout")
-//                .and();
+        http
+                // 退出
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .and();
 
         http
                 // web授权配置，具体规则优先

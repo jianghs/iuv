@@ -53,13 +53,6 @@ public class IndexController {
         return "login";
     }
 
-    /**
-     * 登录错误
-     */
-    @RequestMapping("/loginError")
-    public String error() {
-        return "loginError";
-    }
 
     /**
      * 从授权信息中获取用户名
