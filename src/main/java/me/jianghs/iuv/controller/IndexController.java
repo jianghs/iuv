@@ -42,6 +42,10 @@ public class IndexController {
     @RequestMapping("/index")
     public String index(Model model) {
         model.addAttribute("username", this.getUserNameFromAuthentication());
+
+
+
+
         return "index";
     }
 

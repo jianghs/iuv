@@ -2,6 +2,9 @@ package me.jianghs.iuv.service;
 
 import me.jianghs.iuv.entity.Menu;
 import com.baomidou.mybatisplus.extension.service.IService;
+import me.jianghs.iuv.service.dto.Node;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMenuService extends IService<Menu> {
 
+    /**
+     * 创建根节点列表
+     * @return
+     */
+    List<Node> createRootNodes();
 }
