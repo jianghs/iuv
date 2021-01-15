@@ -36,7 +36,11 @@ spring:
     servlet:
       content-type: text/html
     mode: HTML
-    cache: true
+    cache: false
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # ===== 自定义swagger配置 ===== #
 knife4j-swagger:

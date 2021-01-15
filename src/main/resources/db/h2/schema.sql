@@ -85,6 +85,7 @@ create table iuv_menu
     id                    bigint auto_increment comment '主键'
         primary key,
     parent_id             bigint                                  null comment '上级菜单ID',
+    menu_code             varchar(255)  default ''                not null comment '菜单编码',
     menu_name             varchar(255)  default ''                not null comment '菜单名称',
     menu_type             tinyint       default 0                 not null comment '菜单类型 1-目录 2-菜单 3-按钮',
     introduction          varchar(2000) default ''                not null comment '菜单简介',
