@@ -70,6 +70,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         List<Long> menuIds = roleMenuRelationList.stream().map(RoleMenuRelation::getMenuId).distinct().collect(Collectors.toList());
         LambdaQueryWrapper<Menu> menuLambdaQueryWrapper = new LambdaQueryWrapper<>();
         menuLambdaQueryWrapper.in(Menu::getId, menuIds);
+        menuLambdaQueryWrapper.orderByAsc(Menu::getMenuOrder);
         List<Menu> menuList = menuService.list(menuLambdaQueryWrapper);
         if (CollectionUtils.isEmpty(menuList)) {
             throw new BaseException("资源信息查询失败");

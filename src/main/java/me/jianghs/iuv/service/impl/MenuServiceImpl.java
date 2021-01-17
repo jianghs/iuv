@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.jianghs.iuv.service.IRoleMenuRelationService;
 import me.jianghs.iuv.service.IUserRoleRelationService;
 import me.jianghs.iuv.service.IUserService;
+import me.jianghs.iuv.service.converter.MenuConverter;
 import me.jianghs.iuv.service.dto.Node;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,34 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     public List<Node> createRootNodes(String username) {
         // 找出所有的菜单
         List<Menu> all = userService.queryMenusByUsername(username);
+        List<Node> allNodes = MenuConverter.INSTANCE.sourceToTarget(all);
         // 找出所有根节点
-        List<Menu> root = all.stream().filter(menu -> menu.getParentId() == 0).collect(Collectors.toList());
-
+        List<Node> roots = allNodes.stream().filter(node -> node.getParentId() == 0).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(roots)) {
+            return null;
+        }
         // 循环根节点组装孩子节点
-        return null;
+        for (Node node : roots) {
+            node.setChildren(this.queryChildren(node, allNodes));
+        }
+        return roots;
+    }
+
+    /**
+     * 递归查询所有孩子节点
+     * @param node 当前节点
+     * @param allNodes 所有节点列表
+     * @return 孩子节点
+     */
+    private List<Node> queryChildren(Node node, List<Node> allNodes) {
+        // 根据当前节点id查询孩子节点
+        List<Node> children = allNodes.stream().filter(x -> x.getParentId().equals(node.getId())).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(children)) {
+            return null;
+        }
+        for (Node child : children) {
+            child.setChildren(this.queryChildren(child, allNodes));
+        }
+        return children;
     }
 }
