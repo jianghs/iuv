@@ -34,7 +34,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
     private TagMapper tagMapper;
 
     @Override
-    @RedisCache(key = "IUV_TAG", timeOut = 600L)
+    @RedisCache(key = "IUV_TAG_", timeOut = 600L)
 //    @Cacheable(cacheNames = "tag", key = "#id")
     public Tag detail(long id) {
         return tagMapper.selectById(id);

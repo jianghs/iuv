@@ -18,7 +18,8 @@ public interface IMenuService extends IService<Menu> {
 
     /**
      * 创建根节点列表
-     * @return
+     * @param username 用户名
+     * @return 根节点列表
      */
-    List<Node> createRootNodes();
+    List<Node> createRootNodes(String username);
 }
