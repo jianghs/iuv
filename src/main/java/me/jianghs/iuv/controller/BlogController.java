@@ -1,8 +1,11 @@
 package me.jianghs.iuv.controller;
 
 import me.jianghs.iuv.config.security.SpringSecurityContext;
+import me.jianghs.iuv.entity.Tag;
 import me.jianghs.iuv.service.IMenuService;
+import me.jianghs.iuv.service.ITagService;
 import me.jianghs.iuv.service.dto.Node;
+import me.jianghs.iuv.service.dto.TagQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,8 @@ public class BlogController {
     private SpringSecurityContext securityContext;
     @Autowired
     private IMenuService menuService;
+    @Autowired
+    private ITagService tagService;
     /**
      * 文章页面
      */
@@ -60,6 +65,10 @@ public class BlogController {
         // 准备菜单列表
         List<Node> nodeList = menuService.createRootNodes(username);
         model.addAttribute("nodeList", nodeList);
+
+        TagQuery tagQuery = new TagQuery();
+        List<Tag> tagList = tagService.queryTagList(tagQuery);
+        model.addAttribute("tagList", tagList);
         return "blog/tag";
     }
 

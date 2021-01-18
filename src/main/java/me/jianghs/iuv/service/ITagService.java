@@ -2,6 +2,7 @@ package me.jianghs.iuv.service;
 
 import me.jianghs.iuv.entity.Tag;
 import com.baomidou.mybatisplus.extension.service.IService;
+import me.jianghs.iuv.service.dto.TagQuery;
 
 import java.util.List;
 
@@ -41,4 +42,11 @@ public interface ITagService extends IService<Tag> {
      * @param id
      */
     void delete(Long id);
+
+    /**
+     * 标签列表
+     * @param tagQuery
+     * @return
+     */
+    List<Tag> queryTagList(TagQuery tagQuery);
 }

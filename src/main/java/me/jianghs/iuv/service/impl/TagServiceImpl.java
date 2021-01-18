@@ -6,6 +6,8 @@ import me.jianghs.iuv.entity.Tag;
 import me.jianghs.iuv.mapper.TagMapper;
 import me.jianghs.iuv.service.ITagService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import me.jianghs.iuv.service.dto.TagQuery;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -83,5 +85,16 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
     @CacheEvict(cacheNames = "tag", key = "#id")
     public void delete(Long id) {
         tagMapper.deleteById(id);
+    }
+
+    @Override
+    public List<Tag> queryTagList(TagQuery tagQuery) {
+        LambdaQueryWrapper<Tag> tagLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        tagLambdaQueryWrapper.like(StringUtils.isNotBlank(tagQuery.getTagName()), Tag::getTagName, tagQuery.getTagName());
+        tagLambdaQueryWrapper.eq(Objects.nonNull(tagQuery.getTagStatus()), Tag::getTagStatus, tagQuery.getTagStatus());
+        tagLambdaQueryWrapper.ge(Objects.nonNull(tagQuery.getCreateTimeStart()), Tag::getCreateTime, tagQuery.getCreateTimeStart());
+        tagLambdaQueryWrapper.le(Objects.nonNull(tagQuery.getCreateTimeEnd()), Tag::getCreateTime, tagQuery.getCreateTimeEnd());
+        tagLambdaQueryWrapper.orderByAsc(Tag::getTagOrder);
+        return tagMapper.selectList(tagLambdaQueryWrapper);
     }
 }
