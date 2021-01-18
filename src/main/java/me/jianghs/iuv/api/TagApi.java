@@ -38,7 +38,7 @@ import java.util.Objects;
 @Slf4j
 @RestController
 @RequestMapping("/api/tag")
-public class TagController {
+public class TagApi {
     @Resource
     private ITagService tagService;
 

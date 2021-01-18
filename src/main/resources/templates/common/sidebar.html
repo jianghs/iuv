@@ -43,64 +43,31 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-copy"></i>
-                            <p>
-                                一级菜单1
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="pages/layout/top-nav.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>二级菜单11</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>二级菜单12</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/layout/boxed.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>二级菜单13</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-copy"></i>
-                            <p>
-                                一级菜单2
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="pages/layout/top-nav.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>二级菜单21</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>二级菜单22</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/layout/boxed.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>二级菜单23</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    <!--/*@thymesVar id="nodeList" type="java.util.List"*/-->
+                    <div th:each="node : ${nodeList}">
+                        <li class="nav-item menu-open"  th:if="${node.whetherShow == 1}">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-copy"></i>
+                                <!--/*@thymesVar id="node.menuName" type="java.lang.String"*/-->
+                                <p th:text="${node.menuName}"></p>
+                                <i class="right fas fa-angle-left"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <!--/*@thymesVar id="children" type="java.util.List"*/-->
+                                <div th:each="child : ${node.children}">
+                                    <li class="nav-item" th:if="${child.whetherShow == 1}">
+                                        <a class="nav-link" th:href="${node.routing + child.routing}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p th:text="${child.menuName}"></p>
+                                        </a>
+                                    </li>
+                                </div>
+
+                            </ul>
+                        </li>
+                    </div>
+
+
 
                     <li class="nav-item menu-open">
                         <a href="#" class="nav-link active">

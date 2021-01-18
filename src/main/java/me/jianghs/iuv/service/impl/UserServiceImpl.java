@@ -43,7 +43,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private IMenuService menuService;
 
     @Override
-    @RedisCache(key = "IUV_MENU_LIST_", timeOut = 600L)
+//    @RedisCache(key = "IUV_MENU_LIST", timeOut = 600L)
     public List<Menu> queryMenusByUsername(String username) {
         // 从数据库获取用户信息
         User loginUser = this.queryUserByName(username);
@@ -79,7 +79,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    @RedisCache(key = "IUV_USER_", timeOut = 600L)
+//    @RedisCache(key = "IUV_USER", timeOut = 600L)
     public User queryUserByName(String username) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUserName, username);
