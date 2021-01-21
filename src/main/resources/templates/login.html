@@ -26,7 +26,7 @@
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg" th:text="登录"></p>
-      <p class="login-box-msg" th:if="${param.error != null}" th:text="用户名或者密码错误"></p>
+      <p id="info" class="login-box-msg" th:if="${param.error != null}" th:text="用户名或者密码错误"></p>
 
       <form id="form" th:action="@{/form}" method="post">
         <div class="input-group mb-3">
@@ -101,7 +101,7 @@
   $(function() {
 
     var options = {
-      target: '#output',          //把服务器返回的内容放入id为output的元素中
+      target: '#info',          //把服务器返回的内容放入id为output的元素中
       beforeSubmit: showRequest,  //提交前的回调函数
       success: showResponse,      //提交后的回调函数
       //url: url,                 //默认是form的action， 如果申明，则会覆盖
@@ -113,16 +113,22 @@
     };
 
     function showRequest(formData, jqForm, options){
-      //formData: 数组对象，提交表单时，Form插件会以Ajax方式自动提交这些数据，格式如：[{name:user,value:val },{name:pwd,value:pwd}]
-      //jqForm:   jQuery对象，封装了表单的元素
-      //options:  options对象
-      const queryString = $.param(formData);   //name=1&address=2
       const formElement = jqForm[0];              //将jqForm转换为DOM对象
       const username = formElement.username.value;  //访问jqForm的DOM元素
+      const password = formElement.password.value;  //访问jqForm的DOM元素
+      if (username === '') {
+        toastr.error('用户名不得为空！')
+        return false;
+      }
+      if (password === '') {
+        toastr.error('密码不得为空！')
+        return false;
+      }
       return true;  //只要不返回false，表单都会提交,在这里可以对表单元素进行验证
     };
 
     function showResponse(responseText, statusText){
+      toastr.error('xxix！')
       //dataType=xml
       const name = $('name', responseXML).text();
       const address = $('address', responseXML).text();
@@ -132,14 +138,7 @@
     };
 
     $('#login-button').click(function() {
-      if ($('#username').val() === '') {
-        toastr.error('用户名不得为空！')
-        return;
-      }
-      if ($('#password').val() === '') {
-        toastr.error('密码不得为空！')
-        return;
-      }
+
       // toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
       $('#form').ajaxSubmit(options);
       return false; //阻止表单默认提交

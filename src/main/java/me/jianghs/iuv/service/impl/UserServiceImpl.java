@@ -54,7 +54,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         userRoleRelationLambdaQueryWrapper.eq(UserRoleRelation::getStatus, 1);
         List<UserRoleRelation> userRoleRelationList = userRoleRelationService.list(userRoleRelationLambdaQueryWrapper);
         if (CollectionUtils.isEmpty(userRoleRelationList)) {
-            throw new BaseException("角色信息查询失败");
+            return null;
         }
 
         // 角色查询资源
@@ -64,7 +64,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         roleMenuRelationLambdaQueryWrapper.eq(RoleMenuRelation::getStatus, 1);
         List<RoleMenuRelation> roleMenuRelationList = roleMenuRelationService.list(roleMenuRelationLambdaQueryWrapper);
         if (CollectionUtils.isEmpty(roleMenuRelationList)) {
-            throw new BaseException("资源信息查询失败");
+            return null;
         }
         // 查询所有的菜单
         List<Long> menuIds = roleMenuRelationList.stream().map(RoleMenuRelation::getMenuId).distinct().collect(Collectors.toList());
@@ -73,7 +73,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         menuLambdaQueryWrapper.orderByAsc(Menu::getMenuOrder);
         List<Menu> menuList = menuService.list(menuLambdaQueryWrapper);
         if (CollectionUtils.isEmpty(menuList)) {
-            throw new BaseException("资源信息查询失败");
+            return null;
         }
         return menuList;
     }
@@ -86,7 +86,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         queryWrapper.eq(User::getStatus, 1);
         List<User> users = userMapper.selectList(queryWrapper);
         if (CollectionUtils.isEmpty(users)) {
-            throw new BaseException("用户信息查询失败");
+            return null;
         }
         return users.get(0);
     }

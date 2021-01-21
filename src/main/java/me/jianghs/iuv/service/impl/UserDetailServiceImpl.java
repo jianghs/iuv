@@ -1,13 +1,7 @@
 package me.jianghs.iuv.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import me.jianghs.iuv.entity.Menu;
-import me.jianghs.iuv.entity.RoleMenuRelation;
 import me.jianghs.iuv.entity.User;
-import me.jianghs.iuv.entity.UserRoleRelation;
-import me.jianghs.iuv.service.IMenuService;
-import me.jianghs.iuv.service.IRoleMenuRelationService;
-import me.jianghs.iuv.service.IUserRoleRelationService;
 import me.jianghs.iuv.service.IUserService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -36,10 +31,24 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 从数据库获取用户信息
         User loginUser = userService.queryUserByName(username);
-
+        String[] menuArr = {};
+        if (Objects.isNull(loginUser)) {
+            return org.springframework.security.core.userdetails.User
+                    .withUsername("匿名")
+                    .password("默认密码")
+                    .authorities(menuArr)
+                    .build();
+        }
         List<Menu> menuList = userService.queryMenusByUsername(username);
+        if (CollectionUtils.isEmpty(menuList)) {
+            return org.springframework.security.core.userdetails.User
+                    .withUsername(loginUser.getUserName())
+                    .password(loginUser.getPassword())
+                    .authorities(menuArr)
+                    .build();
+        }
         List<String> menuCodeList = menuList.stream().map(Menu::getMenuCode).distinct().collect(Collectors.toList());
-        String[] menuArr = menuCodeList.toArray(new String[menuCodeList.size()]);
+        menuArr = menuCodeList.toArray(new String[menuCodeList.size()]);
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(loginUser.getUserName())
