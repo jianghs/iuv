@@ -66,23 +66,23 @@
                                 <h3 class="card-title">标签列表</h3>
                             </div>
                             <div class="card-body">
-                                <form>
+                                <form id="query-form" th:action="@{/blog/tag/query}" th:object="${tagQuery}">
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <!-- text input -->
                                             <div class="form-group">
                                                 <label>标签名称</label>
-                                                <input type="text" class="form-control" placeholder="">
+                                                <input type="text" th:field="*{tagName}" class="form-control" placeholder="">
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <!-- select -->
                                             <div class="form-group">
-                                                <label>状态</label>
-                                                <select class="form-control">
-                                                    <option>全部</option>
-                                                    <option>启用</option>
-                                                    <option>停用</option>
+                                                <label>标签状态</label>
+                                                <select th:field="*{tagStatus}" class="form-control">
+                                                    <option th:selected="*{tagStatus == 0}" th:value="0">全部</option>
+                                                    <option th:selected="*{tagStatus == 1}" th:value="1">启用</option>
+                                                    <option th:selected="*{tagStatus == 2}" th:value="2">停用</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -91,11 +91,11 @@
                                                 <label>创建日期:</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                  <span class="input-group-text">
-                                                    <i class="far fa-calendar-alt"></i>
-                                                  </span>
+                                                      <span class="input-group-text">
+                                                        <i class="far fa-calendar-alt"></i>
+                                                      </span>
                                                     </div>
-                                                    <input type="text" class="form-control float-right" id="reservation">
+                                                    <input type="text" th:field="*{dateRange}" class="form-control float-right" id="reservation">
                                                 </div>
                                                 <!-- /.input group -->
                                             </div>
@@ -103,7 +103,7 @@
                                         <div class="col-sm-1">
                                             <div class="form-group">
                                                 <label>&#12288;</label>
-                                                <button type="button" class="btn btn-block btn-primary">查询</button>
+                                                <button type="button" class="btn btn-block btn-primary" id="query">查询</button>
                                             </div>
                                         </div>
                                         <div class="col-sm-1">
@@ -141,8 +141,9 @@
                                                             <td th:text="${tag.hits}"></td>
                                                             <td th:text="${tag.tagOrder}"></td>
                                                             <td th:text="${tag.priority}"></td>
-                                                            <td th:text="${tag.tagStatus}"></td>
-                                                            <td th:text="${tag.createTime}"></td>
+                                                            <td th:if="${tag.tagStatus == 1}" th:text="启用"></td>
+                                                            <td th:if="${tag.tagStatus == 2}" th:text="停用"></td>
+                                                            <td th:text="${#temporals.format(tag.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                                             <td th:text="${tag.creatorId}"></td>
                                                             <td>
                                                                 <div class="margin">
@@ -156,18 +157,6 @@
                                                             </td>
                                                         </tr>
                                                         </tbody>
-                                                        <tfoot>
-                                                        <tr>
-                                                            <th>标签名称</th>
-                                                            <th>点击数</th>
-                                                            <th>排序</th>
-                                                            <th>优先级</th>
-                                                            <th>状态</th>
-                                                            <th>创建时间</th>
-                                                            <th>创建人</th>
-                                                            <th>操作</th>
-                                                        </tr>
-                                                        </tfoot>
                                                     </table>
                                                 </div>
                                             </div>
@@ -190,11 +179,32 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>hello 马伯伯</p>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary">保存</button>
+                            <div class="col-md-12">
+                                <!-- general form elements -->
+                                <div class="card card-primary">
+                                    <!-- form start -->
+                                    <form>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label>标签名称</label>
+                                                <input type="text" class="form-control" placeholder="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>排序</label>
+                                                <input type="text" class="form-control" placeholder="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>优先级</label>
+                                                <input type="text" class="form-control" placeholder="">
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer">
+                                            <button type="submit" class="btn btn-primary">保存</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -265,8 +275,13 @@
     $(function () {
         //Date range picker
         $('#reservation').daterangepicker({
+            startDate: new Date(),
+            endDate: new Date(),
             locale: {
-                format: 'YYYY/MM/DD'
+                format: 'YYYY-MM-DD',
+                separator: ' ~ ',
+                applyLabel: '确定',
+                cancelLabel: '取消',
             }
         });
         $('#example2').DataTable({
@@ -278,6 +293,11 @@
             "autoWidth": false,
             "responsive": true,
         });
+
+        $('#query').click(function() {
+            $('#query-form').submit();
+        });
+
     })
 </script>
 </body>

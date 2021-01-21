@@ -27,6 +27,7 @@
         <shiro.version>1.7.0</shiro.version>
         <jwt.version>3.12.0</jwt.version>
         <thymeleaf.layout.dialect.version>2.5.2</thymeleaf.layout.dialect.version>
+        <thymeleaf.extras.java8time.version>3.0.4.RELEASE</thymeleaf.extras.java8time.version>
     </properties>
 
     <dependencies>
@@ -39,6 +40,12 @@
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
             <version>${thymeleaf.layout.dialect.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-java8time</artifactId>
+            <version>${thymeleaf.extras.java8time.version}</version>
         </dependency>
 
         <!-- spring mvc -->

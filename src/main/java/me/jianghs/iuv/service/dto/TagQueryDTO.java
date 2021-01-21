@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class TagQuery implements Serializable {
+public class TagQueryDTO implements Serializable {
 
     /**
      * 标签名称

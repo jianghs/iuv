@@ -6,13 +6,11 @@ import me.jianghs.iuv.entity.Tag;
 import me.jianghs.iuv.mapper.TagMapper;
 import me.jianghs.iuv.service.ITagService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import me.jianghs.iuv.service.dto.TagQuery;
+import me.jianghs.iuv.service.dto.TagQueryDTO;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -88,7 +86,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
     }
 
     @Override
-    public List<Tag> queryTagList(TagQuery tagQuery) {
+    public List<Tag> queryTagList(TagQueryDTO tagQuery) {
         LambdaQueryWrapper<Tag> tagLambdaQueryWrapper = new LambdaQueryWrapper<>();
         tagLambdaQueryWrapper.like(StringUtils.isNotBlank(tagQuery.getTagName()), Tag::getTagName, tagQuery.getTagName());
         tagLambdaQueryWrapper.eq(Objects.nonNull(tagQuery.getTagStatus()), Tag::getTagStatus, tagQuery.getTagStatus());

@@ -442,7 +442,7 @@
         // if attached to a text input, set the initial value
         //
 
-        this.updateElement();
+        // this.updateElement();
 
     };
 

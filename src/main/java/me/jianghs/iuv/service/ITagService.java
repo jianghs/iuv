@@ -2,7 +2,7 @@ package me.jianghs.iuv.service;
 
 import me.jianghs.iuv.entity.Tag;
 import com.baomidou.mybatisplus.extension.service.IService;
-import me.jianghs.iuv.service.dto.TagQuery;
+import me.jianghs.iuv.service.dto.TagQueryDTO;
 
 import java.util.List;
 
@@ -48,5 +48,5 @@ public interface ITagService extends IService<Tag> {
      * @param tagQuery
      * @return
      */
-    List<Tag> queryTagList(TagQuery tagQuery);
+    List<Tag> queryTagList(TagQueryDTO tagQuery);
 }
