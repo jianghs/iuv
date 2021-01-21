@@ -75,6 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/resources/r2").hasAuthority("3")
                 // 静态文件无需权限访问
                 .antMatchers( "/css/**", "/fonts/**","/img/**","/js/**","/plugins/**").permitAll()
+                .antMatchers( "/register").permitAll()
                 // 其他接口需要登录后才能访问
                 .anyRequest().authenticated()
                 .and();

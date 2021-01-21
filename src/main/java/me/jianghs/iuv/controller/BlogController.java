@@ -1,14 +1,10 @@
 package me.jianghs.iuv.controller;
 
-import me.jianghs.iuv.config.security.SpringSecurityContext;
-import me.jianghs.iuv.service.IMenuService;
-import me.jianghs.iuv.service.dto.Node;
+import me.jianghs.iuv.common.context.PageContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 
 /**
  * @className: TagController
@@ -21,19 +17,13 @@ import java.util.List;
 @RequestMapping("/blog")
 public class BlogController {
     @Autowired
-    private SpringSecurityContext securityContext;
-    @Autowired
-    private IMenuService menuService;
+    private PageContext pageContext;
     /**
      * 文章页面
      */
     @RequestMapping("/article")
     public String article(Model model) {
-        String username = securityContext.getUserNameFromAuthentication();
-        model.addAttribute("username", username);
-        // 准备菜单列表
-        List<Node> nodeList = menuService.createRootNodes(username);
-        model.addAttribute("nodeList", nodeList);
+        pageContext.addPageCommonElements(model);
         return "blog/article";
     }
 
@@ -42,11 +32,7 @@ public class BlogController {
      */
     @RequestMapping("/classification")
     public String classification(Model model) {
-        String username = securityContext.getUserNameFromAuthentication();
-        model.addAttribute("username", username);
-        // 准备菜单列表
-        List<Node> nodeList = menuService.createRootNodes(username);
-        model.addAttribute("nodeList", nodeList);
+        pageContext.addPageCommonElements(model);
         return "blog/classification";
     }
 
@@ -56,11 +42,7 @@ public class BlogController {
      */
     @RequestMapping("/recommend")
     public String recommend(Model model) {
-        String username = securityContext.getUserNameFromAuthentication();
-        model.addAttribute("username", username);
-        // 准备菜单列表
-        List<Node> nodeList = menuService.createRootNodes(username);
-        model.addAttribute("nodeList", nodeList);
+        pageContext.addPageCommonElements(model);
         return "blog/recommend";
     }
 
@@ -69,11 +51,7 @@ public class BlogController {
      */
     @RequestMapping("/subject")
     public String subject(Model model) {
-        String username = securityContext.getUserNameFromAuthentication();
-        model.addAttribute("username", username);
-        // 准备菜单列表
-        List<Node> nodeList = menuService.createRootNodes(username);
-        model.addAttribute("nodeList", nodeList);
+        pageContext.addPageCommonElements(model);
         return "blog/subject";
     }
 }

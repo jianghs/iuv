@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IUV | Registration Page</title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="../static/fonts/fonts.css">
+  <link rel="stylesheet" href="/fonts/fonts.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../static/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
   <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="../static/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../static/css/adminlte.min.css">
+  <link rel="stylesheet" href="/css/adminlte.min.css">
 </head>
 <body class="hold-transition register-page">
 <div class="register-box">
@@ -86,7 +86,7 @@
 <!--        </a>-->
 <!--      </div>-->
 
-      <a href="login.html" class="text-center">我已经注册</a>
+      <a th:href="@{/login}" class="text-center">我已经注册</a>
     </div>
     <!-- /.form-box -->
   </div><!-- /.card -->
@@ -94,10 +94,10 @@
 <!-- /.register-box -->
 
 <!-- jQuery -->
-<script src="../static/plugins/jquery/jquery.min.js"></script>
+<script src="/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="../static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
-<script src="../static/js/adminlte.min.js"></script>
+<script src="/js/adminlte.min.js"></script>
 </body>
 </html>

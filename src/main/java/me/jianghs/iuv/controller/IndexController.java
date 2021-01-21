@@ -1,6 +1,7 @@
 package me.jianghs.iuv.controller;
 
-import me.jianghs.iuv.config.security.SpringSecurityContext;
+import me.jianghs.iuv.common.context.PageContext;
+import me.jianghs.iuv.common.context.SpringSecurityContext;
 import me.jianghs.iuv.service.IMenuService;
 import me.jianghs.iuv.service.dto.Node;
 import org.slf4j.Logger;
@@ -25,9 +26,7 @@ import java.util.List;
 public class IndexController {
     Logger logger = LoggerFactory.getLogger(IndexController.class);
     @Autowired
-    private SpringSecurityContext securityContext;
-    @Autowired
-    private IMenuService menuService;
+    private PageContext pageContext;
     /**
      * 跳转首页
      */
@@ -46,11 +45,7 @@ public class IndexController {
      */
     @RequestMapping("/index")
     public String index(Model model) {
-        String username = securityContext.getUserNameFromAuthentication();
-        model.addAttribute("username", username);
-        // 准备菜单列表
-        List<Node> nodeList = menuService.createRootNodes(username);
-        model.addAttribute("nodeList", nodeList);
+        pageContext.addPageCommonElements(model);
         return "index";
     }
 
@@ -62,6 +57,13 @@ public class IndexController {
         return "login";
     }
 
+    /**
+     * 登录
+     */
+    @RequestMapping("/register")
+    public String register() {
+        return "register";
+    }
 
 
 }

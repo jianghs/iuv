@@ -1,4 +1,4 @@
-package me.jianghs.iuv.config.security;
+package me.jianghs.iuv.common.context;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

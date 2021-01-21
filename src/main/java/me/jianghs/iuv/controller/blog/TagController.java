@@ -1,6 +1,7 @@
 package me.jianghs.iuv.controller.blog;
 
-import me.jianghs.iuv.config.security.SpringSecurityContext;
+import me.jianghs.iuv.common.context.PageContext;
+import me.jianghs.iuv.common.context.SpringSecurityContext;
 import me.jianghs.iuv.controller.blog.query.TagQuery;
 import me.jianghs.iuv.entity.Tag;
 import me.jianghs.iuv.service.IMenuService;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @className: TagController
@@ -30,9 +30,7 @@ import java.util.Objects;
 @RequestMapping("/blog/tag")
 public class TagController {
     @Autowired
-    private SpringSecurityContext securityContext;
-    @Autowired
-    private IMenuService menuService;
+    private PageContext pageContext;
     @Autowired
     private ITagService tagService;
     /**
@@ -40,14 +38,11 @@ public class TagController {
      */
     @RequestMapping("")
     public String tag(Model model) {
-        String username = securityContext.getUserNameFromAuthentication();
-        model.addAttribute("username", username);
-        // 准备菜单列表
-        List<Node> nodeList = menuService.createRootNodes(username);
-        model.addAttribute("nodeList", nodeList);
+        pageContext.addPageCommonElements(model);
 
         TagQueryDTO tagQuery = new TagQueryDTO();
         List<Tag> tagList = tagService.queryTagList(tagQuery);
+
         model.addAttribute("tagList", tagList);
         model.addAttribute("tagQuery", new TagQuery());
 
@@ -59,11 +54,7 @@ public class TagController {
      */
     @RequestMapping("/query")
     public String query(Model model, @ModelAttribute(value = "tagQuery") TagQuery query) {
-        String username = securityContext.getUserNameFromAuthentication();
-        model.addAttribute("username", username);
-        // 准备菜单列表
-        List<Node> nodeList = menuService.createRootNodes(username);
-        model.addAttribute("nodeList", nodeList);
+        pageContext.addPageCommonElements(model);
 
         TagQueryDTO tagQuery = new TagQueryDTO();
         tagQuery.setTagName(query.getTagName());
