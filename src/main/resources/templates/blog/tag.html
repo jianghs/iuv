@@ -127,7 +127,7 @@
                                                     <table id="example2" class="table table-bordered table-hover">
                                                         <thead>
                                                         <tr>
-                                                            <th style="display:none;">id</th>
+                                                            <th>序号</th>
                                                             <th>标签名称</th>
                                                             <th>点击数</th>
                                                             <th>排序</th>
@@ -140,7 +140,7 @@
                                                         </thead>
                                                         <tbody>
                                                         <tr th:each="tag : ${tagList}">
-                                                            <td style="display:none;" th:text="${tag.id}"></td>
+                                                            <td th:text="${tagStat.index + 1}"></td>
                                                             <td th:text="${tag.tagName}"></td>
                                                             <td th:text="${tag.hits}"></td>
                                                             <td th:text="${tag.tagOrder}"></td>
@@ -302,7 +302,6 @@
         $('#query').click(function() {
             $('#query-form').submit();
         });
-
 
         // 数据校验
         const dataCheck = function (formData, jqForm, options) {
