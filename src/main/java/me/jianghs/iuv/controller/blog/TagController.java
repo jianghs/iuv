@@ -2,6 +2,8 @@ package me.jianghs.iuv.controller.blog;
 
 import me.jianghs.iuv.common.context.PageContext;
 import me.jianghs.iuv.common.context.SpringSecurityContext;
+import me.jianghs.iuv.common.context.UserContext;
+import me.jianghs.iuv.controller.blog.command.TagCommand;
 import me.jianghs.iuv.controller.blog.query.TagQuery;
 import me.jianghs.iuv.entity.Tag;
 import me.jianghs.iuv.service.IMenuService;
@@ -31,6 +33,8 @@ import java.util.List;
 public class TagController {
     @Autowired
     private PageContext pageContext;
+    @Autowired
+    private UserContext userContext;
     @Autowired
     private ITagService tagService;
     /**
@@ -67,6 +71,27 @@ public class TagController {
 
         List<Tag> tagList = tagService.queryTagList(tagQuery);
         model.addAttribute("tagList", tagList);
+        return "blog/tag";
+    }
+
+    /**
+     * 新增页面
+     */
+    @RequestMapping("/add")
+    public String add(Model model, @ModelAttribute(value = "tagCommand") TagCommand tagCommand) {
+        pageContext.addPageCommonElements(model);
+
+        Tag tag = new Tag();
+        tag.setTagName(tagCommand.getTagName());
+        tag.setTagOrder(tagCommand.getTagOrder());
+        tag.setPriority(tagCommand.getPriority());
+        tag.setCreatorId(userContext.getUserInfo().getId());
+        try {
+            tagService.addTag(tag);
+        } catch (Exception e) {
+            model.addAttribute("errorInfo", e.getMessage());
+        }
+        model.addAttribute("tagQuery", new TagQuery());
         return "blog/tag";
     }
 }

@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -125,6 +127,7 @@
                                                     <table id="example2" class="table table-bordered table-hover">
                                                         <thead>
                                                         <tr>
+                                                            <th style="display:none;">id</th>
                                                             <th>标签名称</th>
                                                             <th>点击数</th>
                                                             <th>排序</th>
@@ -137,6 +140,7 @@
                                                         </thead>
                                                         <tbody>
                                                         <tr th:each="tag : ${tagList}">
+                                                            <td style="display:none;" th:text="${tag.id}"></td>
                                                             <td th:text="${tag.tagName}"></td>
                                                             <td th:text="${tag.hits}"></td>
                                                             <td th:text="${tag.tagOrder}"></td>
@@ -148,7 +152,7 @@
                                                             <td>
                                                                 <div class="margin">
                                                                     <div class="btn-group">
-                                                                   k     <button type="button" class="btn btn-warning" id="">编辑</button>
+                                                                        <button type="button" class="btn btn-warning" id="">编辑</button>
                                                                     </div>
                                                                     <div class="btn-group">
                                                                         <button type="button" class="btn btn-danger">删除</button>
@@ -183,24 +187,24 @@
                                 <!-- general form elements -->
                                 <div class="card card-primary">
                                     <!-- form start -->
-                                    <form>
+                                    <form id="add-form" th:action="@{/blog/tag/add}">
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label>标签名称</label>
-                                                <input type="text" class="form-control" placeholder="">
+                                                <input type="text" class="form-control" placeholder="" id="tagName" name="tagName">
                                             </div>
                                             <div class="form-group">
                                                 <label>排序</label>
-                                                <input type="text" class="form-control" placeholder="">
+                                                <input type="text" class="form-control" placeholder="" id="priority" name="priority">
                                             </div>
                                             <div class="form-group">
                                                 <label>优先级</label>
-                                                <input type="text" class="form-control" placeholder="">
+                                                <input type="text" class="form-control" placeholder="" id="tagOrder" name="tagOrder">
                                             </div>
                                         </div>
                                         <!-- /.card-body -->
                                         <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary">保存</button>
+                                            <button type="submit" class="btn btn-primary" id="add-button">保存</button>
                                         </div>
                                     </form>
                                 </div>
@@ -212,6 +216,8 @@
                 <!-- /.modal-dialog -->
             </div>
             <!-- /.modal -->
+
+            <div id="err-info" style="display: none" th:text="${errorInfo}"></div>
         </section>
     </div>
     <div th:replace="common/footer :: copy"></div>
@@ -226,6 +232,7 @@
 
 <!-- jQuery -->
 <script src="/plugins/jquery/jquery.min.js"></script>
+<script src="/plugins/jquery/jquery.form.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="/plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -254,10 +261,8 @@
 <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="/js/pages/dashboard.js"></script>
+<!-- Toastr -->
+<script src="/plugins/toastr/toastr.min.js"></script>
 <!-- DataTables  & Plugins -->
 <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -296,6 +301,51 @@
 
         $('#query').click(function() {
             $('#query-form').submit();
+        });
+
+
+        // 数据校验
+        const dataCheck = function (formData, jqForm, options) {
+            const formElement = jqForm[0];              //将jqForm转换为DOM对象
+            const tagName = formElement.tagName.value;  //访问jqForm的DOM元素
+            if (tagName === '') {
+                toastr.error('标签名称不得为空！')
+                return false;
+            }
+            return true;
+        };
+
+        // 调用成功后回调函数
+        const callback = function(responseText, statusText){
+            if (statusText != "success") {
+                toastr.error("保存失败！")
+                return false;
+            }
+            const errInfo = $(responseText).find('#err-info').text();
+            if (errInfo != "") {
+                toastr.error(errInfo);
+                return false;
+            }
+            window.location.href='/blog/tag';
+        };
+
+        const options = {
+            // target: '#info',          //把服务器返回的内容放入id为output的元素中
+            beforeSubmit: dataCheck,  //提交前的回调函数
+            success: callback,      //提交后的回调函数
+            //url: url,                 //默认是form的action， 如果申明，则会覆盖
+            //type: type,               //默认是form的method（get or post），如果申明，则会覆盖
+            // dataType: "json",           //html(默认), xml, script, json...接受服务端返回的类型
+            //clearForm: true,          //成功提交后，清除所有表单元素的值
+            //resetForm: true,          //成功提交后，重置所有表单元素的值
+            timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+        };
+
+        // 单击
+        $('#add-button').click(function() {
+            $('#add-form').ajaxSubmit(options);
+            //阻止表单默认提交
+            return false;
         });
 
     })

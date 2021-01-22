@@ -2,11 +2,13 @@ package me.jianghs.iuv.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import me.jianghs.iuv.common.annotation.RedisCache;
+import me.jianghs.iuv.common.exception.BaseException;
 import me.jianghs.iuv.entity.Tag;
 import me.jianghs.iuv.mapper.TagMapper;
 import me.jianghs.iuv.service.ITagService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.jianghs.iuv.service.dto.TagQueryDTO;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -46,15 +48,17 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
      * @param tag
      */
     @Override
-    @CachePut(cacheNames = "tag", key = "#tag.id")
-    public Tag addTag(Tag tag) {
-        tag.setCreatorId(1L);
-        tag.setCreateTime(LocalDateTime.now());
-        tagMapper.insert(tag);
-
+//    @CachePut(cacheNames = "tag", key = "#tag.id")
+    public void addTag(Tag tag) {
         LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Tag::getTagName, tag.getTagName());
-        return tagMapper.selectOne(queryWrapper);
+        List<Tag> exists = tagMapper.selectList(queryWrapper);
+        if (CollectionUtils.isNotEmpty(exists)) {
+            throw new BaseException("标签已存在！");
+        }
+        tag.setTagStatus(1);
+        tag.setCreateTime(LocalDateTime.now());
+        tagMapper.insert(tag);
     }
 
     /**

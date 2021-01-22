@@ -28,7 +28,7 @@ public interface ITagService extends IService<Tag> {
      * @param tag 入参
      * @return 出参
      */
-    Tag addTag(Tag tag);
+    void addTag(Tag tag);
 
     /**
      * 更新
