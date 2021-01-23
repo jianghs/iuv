@@ -94,4 +94,43 @@ public class TagController {
         model.addAttribute("tagQuery", new TagQuery());
         return "blog/tag";
     }
+
+    /**
+     * 编辑页面
+     */
+    @RequestMapping("/edit")
+    public String edit(Model model, @ModelAttribute(value = "tagCommand") TagCommand tagCommand) {
+        pageContext.addPageCommonElements(model);
+
+        Tag tag = new Tag();
+        tag.setId(tagCommand.getId());
+        tag.setTagName(tagCommand.getTagName());
+        tag.setTagOrder(tagCommand.getTagOrder());
+        tag.setPriority(tagCommand.getPriority());
+        tag.setTagStatus(tagCommand.getTagStatus());
+        tag.setModifierId(userContext.getUserInfo().getId());
+        try {
+            tagService.updateTag(tag);
+        } catch (Exception e) {
+            model.addAttribute("errorInfo", e.getMessage());
+        }
+        model.addAttribute("tagQuery", new TagQuery());
+        return "blog/tag";
+    }
+
+    /**
+     * 删除页面
+     */
+    @RequestMapping("/delete")
+    public String add(Model model, @ModelAttribute(value = "id") Long id) {
+        pageContext.addPageCommonElements(model);
+
+        try {
+            tagService.delete(id);
+        } catch (Exception e) {
+            model.addAttribute("errorInfo", e.getMessage());
+        }
+        model.addAttribute("tagQuery", new TagQuery());
+        return "blog/tag";
+    }
 }

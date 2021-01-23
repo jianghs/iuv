@@ -67,15 +67,10 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
      * @param tag
      */
     @Override
-    @CachePut(cacheNames = "tag", key = "#tag.id")
-    public Tag updateTag(Tag tag) {
-        tag.setModifierId(1L);
+//    @CachePut(cacheNames = "tag", key = "#tag.id")
+    public void updateTag(Tag tag) {
         tag.setModifyTime(LocalDateTime.now());
         tagMapper.updateById(tag);
-
-        LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Tag::getId, tag.getId());
-        return tagMapper.selectOne(queryWrapper);
     }
 
     /**
@@ -84,7 +79,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
      * @param id
      */
     @Override
-    @CacheEvict(cacheNames = "tag", key = "#id")
+//    @CacheEvict(cacheNames = "tag", key = "#id")
     public void delete(Long id) {
         tagMapper.deleteById(id);
     }

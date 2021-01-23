@@ -35,7 +35,7 @@ public interface ITagService extends IService<Tag> {
      * @param tag
      * @return 更新
      */
-    Tag updateTag(Tag tag);
+    void updateTag(Tag tag);
 
     /**
      * 删除

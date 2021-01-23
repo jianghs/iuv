@@ -100,10 +100,10 @@
 <script>
   $(function() {
     // 数据校验
-    const dataCheck = function (formData, jqForm, options) {
-      const formElement = jqForm[0];              //将jqForm转换为DOM对象
-      const username = formElement.username.value;  //访问jqForm的DOM元素
-      const password = formElement.password.value;  //访问jqForm的DOM元素
+    let dataCheck = function (formData, jqForm, options) {
+      let formElement = jqForm[0];              //将jqForm转换为DOM对象
+      let username = formElement.username.value;  //访问jqForm的DOM元素
+      let password = formElement.password.value;  //访问jqForm的DOM元素
       if (username === '') {
         toastr.error('用户名不得为空！')
         return false;
@@ -116,12 +116,12 @@
     };
 
     // 调用成功后回调函数
-    const callback = function(responseText, statusText){
+    let callback = function(responseText, statusText){
       if (statusText != "success") {
         toastr.error("登录失败！")
         return false;
       }
-      const errInfo = $(responseText).find('#err-info').text();
+      let errInfo = $(responseText).find('#err-info').text();
       if (errInfo != "") {
         toastr.error(errInfo);
         return false;
@@ -129,7 +129,7 @@
       window.location.href='/index';
     };
 
-    const options = {
+    let options = {
       // target: '#info',          //把服务器返回的内容放入id为output的元素中
       beforeSubmit: dataCheck,  //提交前的回调函数
       success: callback,      //提交后的回调函数

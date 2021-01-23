@@ -14,6 +14,10 @@ import java.io.Serializable;
 @Data
 public class TagCommand implements Serializable {
     /**
+     * id
+     */
+    private Long id;
+    /**
      * 标签名称
      */
     private String tagName;
@@ -27,4 +31,9 @@ public class TagCommand implements Serializable {
      * 优先级
      */
     private Integer priority;
+
+    /**
+     * 状态 1-正常 2-停用
+     */
+    private Integer tagStatus;
 }

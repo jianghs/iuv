@@ -97,7 +97,7 @@
                                                         <i class="far fa-calendar-alt"></i>
                                                       </span>
                                                     </div>
-                                                    <input type="text" th:field="*{dateRange}" class="form-control float-right" id="reservation">
+                                                    <input type="text" th:field="*{dateRange}" class="form-control float-right" id="date-range">
                                                 </div>
                                                 <!-- /.input group -->
                                             </div>
@@ -105,7 +105,7 @@
                                         <div class="col-sm-1">
                                             <div class="form-group">
                                                 <label>&#12288;</label>
-                                                <button type="button" class="btn btn-block btn-primary" id="query">查询</button>
+                                                <button type="button" class="btn btn-block btn-primary" id="tag-query">查询</button>
                                             </div>
                                         </div>
                                         <div class="col-sm-1">
@@ -124,7 +124,7 @@
                                                 </div>
                                                 <!-- /.card-header -->
                                                 <div class="card-body">
-                                                    <table id="example2" class="table table-bordered table-hover">
+                                                    <table id="tag-table" class="table table-bordered table-hover">
                                                         <thead>
                                                         <tr>
                                                             <th>序号</th>
@@ -152,10 +152,10 @@
                                                             <td>
                                                                 <div class="margin">
                                                                     <div class="btn-group">
-                                                                        <button type="button" class="btn btn-warning" id="edit-button" data-toggle="modal" data-target="#modal-edit">编辑</button>
+                                                                        <button type="button" class="btn btn-warning" id="edit-button" data-toggle="modal" data-target="#modal-edit" th:attr="data-whatever=${tag}">编辑</button>
                                                                     </div>
                                                                     <div class="btn-group">
-                                                                        <button type="button" class="btn btn-danger" id="delete-button" data-toggle="modal" data-target="#modal-delete">删除</button>
+                                                                        <button type="button" class="btn btn-danger" id="delete-button" data-toggle="modal" data-target="#modal-delete" th:attr="data-whatever=${tag.id}">删除</button>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -233,22 +233,30 @@
                                     <!-- form start -->
                                     <form id="edit-form" th:action="@{/blog/tag/edit}">
                                         <div class="card-body">
+                                            <input type="text" style="display: none" class="form-control" placeholder="" id="edit-tagId" name="id">
                                             <div class="form-group">
                                                 <label>标签名称</label>
-                                                <input type="text" class="form-control" placeholder="" id="edit-tagName" name="edit-tagName">
+                                                <input type="text" class="form-control" placeholder="" id="edit-tagName" name="tagName" disabled>
                                             </div>
                                             <div class="form-group">
                                                 <label>排序</label>
-                                                <input type="text" class="form-control" placeholder="" id="edit-priority" name="edit-priority">
+                                                <input type="text" class="form-control" placeholder="" id="edit-priority" name="priority">
                                             </div>
                                             <div class="form-group">
                                                 <label>优先级</label>
-                                                <input type="text" class="form-control" placeholder="" id="edit-tagOrder" name="edit-tagOrder">
+                                                <input type="text" class="form-control" placeholder="" id="edit-tagOrder" name="tagOrder">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>标签状态</label>
+                                                <select class="form-control" id="edit-status-selector" name="tagStatus">
+                                                    <option value="1">启用</option>
+                                                    <option value="2">停用</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <!-- /.card-body -->
                                         <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary" id="submit-button">提交</button>
+                                            <button type="submit" class="btn btn-primary" id="edit-submit-button">提交</button>
                                         </div>
                                     </form>
                                 </div>
@@ -269,13 +277,17 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
-                            <p>是否删除该条记录?</p>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary">确定</button>
-                        </div>
+                        <form id="delete-form" th:action="@{/blog/tag/delete}">
+                            <input type="text" style="display: none" class="form-control" placeholder="" id="delete-tagId" name="id">
+                            <div class="modal-body">
+                                <p>是否删除该条记录?</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary" id="delete-submit-button">确定</button>
+                            </div>
+                        </form>
+
                     </div>
                     <!-- /.modal-content -->
                 </div>
@@ -326,6 +338,7 @@
 <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/adminlte.js"></script>
+<script src="/js/common.js"></script>
 <!-- Toastr -->
 <script src="/plugins/toastr/toastr.min.js"></script>
 <!-- DataTables  & Plugins -->
@@ -342,13 +355,9 @@
 <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script>
-    function deleteTag(id) {
-        alert(id);
-    }
-
     $(function () {
-        //Date range picker
-        $('#reservation').daterangepicker({
+        //日期范围组件
+        $('#date-range').daterangepicker({
             startDate: new Date(),
             endDate: new Date(),
             locale: {
@@ -358,7 +367,9 @@
                 cancelLabel: '取消',
             }
         });
-        $('#example2').DataTable({
+
+        // 表格组件
+        $('#tag-table').DataTable({
             "paging": true,
             "lengthChange": false,
             "searching": false,
@@ -368,12 +379,12 @@
             "responsive": true,
         });
 
-        $('#query').click(function() {
+        // 【查询】按钮动作
+        $('#tag-query').click(function() {
             $('#query-form').submit();
         });
 
-        // 数据校验
-        const dataCheck = function (formData, jqForm, options) {
+        let dataCheck = function (formData, jqForm, options) {
             const formElement = jqForm[0];              //将jqForm转换为DOM对象
             const tagName = formElement.tagName.value;  //访问jqForm的DOM元素
             if (tagName === '') {
@@ -382,11 +393,9 @@
             }
             return true;
         };
-
-        // 调用成功后回调函数
-        const callback = function(responseText, statusText){
+        let callback = function(responseText, statusText){
             if (statusText != "success") {
-                toastr.error("保存失败！")
+                toastr.error("处理失败！")
                 return false;
             }
             const errInfo = $(responseText).find('#err-info').text();
@@ -396,8 +405,7 @@
             }
             window.location.href='/blog/tag';
         };
-
-        const options = {
+        let options = {
             // target: '#info',          //把服务器返回的内容放入id为output的元素中
             beforeSubmit: dataCheck,  //提交前的回调函数
             success: callback,      //提交后的回调函数
@@ -408,12 +416,54 @@
             //resetForm: true,          //成功提交后，重置所有表单元素的值
             timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
         };
-
-        // 单击
+        // 【新增】保存按钮动作
         $('#add-button').click(function() {
-            $('#add-form').ajaxSubmit(options);
+            $('#add-form').ajaxSubmit({
+                beforeSubmit: dataCheck,  //提交前的回调函数
+                success: callback,      //提交后的回调函数
+                timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+            });
             //阻止表单默认提交
             return false;
+        });
+
+        // 【编辑】保存按钮动作
+        $('#edit-submit-button').click(function() {
+            $('#edit-form').ajaxSubmit({
+                success: callback,      //提交后的回调函数
+                timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+            });
+            //阻止表单默认提交
+            return false;
+        });
+
+        // 【删除】保存按钮动作
+        $('#delete-submit-button').click(function() {
+            $('#delete-form').ajaxSubmit({
+                success: callback,      //提交后的回调函数
+                timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+            });
+            //阻止表单默认提交
+            return false;
+        });
+
+        $('#modal-edit').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget); // 触发事件的按钮
+            let tag = button.data('whatever'); // 解析出data-whatever内容
+            let tagObj = str2Json("Tag", tag);
+            let modal = $(this);
+            modal.find('#edit-tagId').val(tagObj.id);
+            modal.find('#edit-tagName').val(tagObj.tagName);
+            modal.find('#edit-priority').val(tagObj.priority);
+            modal.find('#edit-tagOrder').val(tagObj.tagOrder);
+            modal.find('#edit-status-selector').val(tagObj.tagStatus);
+        });
+
+        $('#modal-delete').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget); // 触发事件的按钮
+            let id = button.data('whatever'); // 解析出data-whatever内容
+            let modal = $(this);
+            modal.find('#delete-tagId').val(id);
         });
     })
 </script>
