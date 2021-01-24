@@ -166,6 +166,34 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h3 class="card-title">列表2</h3>
+                                                </div>
+                                                <!-- /.card-header -->
+                                                <div class="card-body">
+                                                    <table id="tag-table2" class="table table-bordered table-hover">
+                                                        <thead>
+                                                        <tr>
+<!--                                                            <th>序号</th>-->
+                                                            <th>标签名称</th>
+                                                            <th>点击数</th>
+                                                            <th>排序</th>
+                                                            <th>优先级</th>
+                                                            <th>状态</th>
+                                                            <th>创建人</th>
+                                                            <th>创建时间</th>
+<!--                                                            <th>操作</th>-->
+                                                        </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -215,8 +243,6 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
-            <!-- /.modal -->
-
             <div class="modal fade" id="modal-edit">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -267,7 +293,6 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
-
             <div class="modal fade" id="modal-delete">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -405,17 +430,6 @@
             }
             window.location.href='/blog/tag';
         };
-        let options = {
-            // target: '#info',          //把服务器返回的内容放入id为output的元素中
-            beforeSubmit: dataCheck,  //提交前的回调函数
-            success: callback,      //提交后的回调函数
-            //url: url,                 //默认是form的action， 如果申明，则会覆盖
-            //type: type,               //默认是form的method（get or post），如果申明，则会覆盖
-            // dataType: "json",           //html(默认), xml, script, json...接受服务端返回的类型
-            //clearForm: true,          //成功提交后，清除所有表单元素的值
-            //resetForm: true,          //成功提交后，重置所有表单元素的值
-            timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
-        };
         // 【新增】保存按钮动作
         $('#add-button').click(function() {
             $('#add-form').ajaxSubmit({
@@ -465,6 +479,97 @@
             let modal = $(this);
             modal.find('#delete-tagId').val(id);
         });
+
+
+        //提示信息
+        let lang = {
+            "sProcessing": "处理中...",
+            "sLengthMenu": "每页 _MENU_ 项",
+            "sZeroRecords": "没有匹配结果",
+            "sInfo": "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
+            "sInfoEmpty": "当前显示第 0 至 0 项，共 0 项",
+            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+            "sInfoPostFix": "",
+            "sSearch": "搜索:",
+            "sUrl": "",
+            "sEmptyTable": "表中数据为空",
+            "sLoadingRecords": "载入中...",
+            "sInfoThousands": ",",
+            "oPaginate": {
+                "sFirst": "首页",
+                "sPrevious": "上页",
+                "sNext": "下页",
+                "sLast": "末页",
+                "sJump": "跳转"
+            },
+            "oAria": {
+                "sSortAscending": ": 以升序排列此列",
+                "sSortDescending": ": 以降序排列此列"
+            }
+        };
+
+        //初始化表格
+        $("#tag-table2").dataTable({
+            language:lang,  //提示信息
+            autoWidth: false,  //禁用自动调整列宽
+            stripeClasses: ["odd", "even"],  //为奇偶行加上样式，兼容不支持CSS伪类的场合
+            processing: true,  //隐藏加载提示,自行处理
+            serverSide: true,  //启用服务器端分页
+            searching: false,  //禁用原生搜索
+            orderMulti: false,  //启用多列排序
+            order: [],  //取消默认排序查询,否则复选框一列会出现小箭头
+            renderer: "bootstrap",  //渲染样式：Bootstrap和jquery-ui
+            pagingType: "simple_numbers",  //分页样式：simple,simple_numbers,full,full_numbers
+            columnDefs: [{
+                "targets": 'nosort',  //列的样式名
+                "orderable": false    //包含上样式名‘nosort’的禁止排序
+            }],
+            ajax: function (data, callback, settings) {
+                //封装请求参数
+                let param = {};
+                param.size = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+                param.current = (data.start / data.length)+1;//当前页码
+                //ajax请求数据
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "/api/tag/page",
+                    cache: false,  //禁用缓存
+                    data: JSON.stringify(param),  //传入组装的参数
+                    dataType: "json",
+                    success: function (result) {
+                        //console.log(result);
+                        //setTimeout仅为测试延迟效果
+                        setTimeout(function () {
+                            //封装返回数据
+                            let returnData = {};
+                            // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                            returnData.recordsTotal = result.data.total;//返回数据全部记录
+                            returnData.recordsFiltered = result.data.total;//后台不实现过滤功能，每次查询均视作全部结果
+                            returnData.data = result.data.records;//返回的数据列表
+                            //console.log(returnData);
+                            //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                            //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                            callback(returnData);
+                        }, 200);
+                    }
+                });
+            },
+            //列表表头字段
+            columns: [
+                { "data": "tagName" },
+                { "data": "hits" },
+                { "data": "tagOrder" },
+                { "data": "priority" },
+                { "data": "tagStatus" },
+                { "data": "creatorId" },
+                { "data": "createTime" }
+            ]
+        });
+
+
+
+
     })
 </script>
 </body>
