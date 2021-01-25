@@ -342,7 +342,7 @@
             }
         });
 
-        let dataCheck = function (formData, jqForm, options) {
+        let dataCheck = function(formData, jqForm, options) {
             const formElement = jqForm[0];              //将jqForm转换为DOM对象
             const tagName = formElement.tagName.value;  //访问jqForm的DOM元素
             if (tagName === '') {
@@ -351,7 +351,7 @@
             }
             return true;
         };
-        let callback = function(responseText, statusText){
+        let afterCheck = function(responseText, statusText) {
             if (statusText != "success") {
                 if (responseText.status = "403") {
                     toastr.error("权限不足！")
@@ -369,14 +369,26 @@
                 toastr.error(errInfo);
                 return false;
             }
+            return true;
+        }
+        let queryCallback = function(responseText, statusText){
+            if (!afterCheck(responseText, statusText)) {
+                return false;
+            }
             window.location.href='/blog/tag?menuId='+ $('#menuId').val() +'&tagName='+ $('#tagName').val() +'&tagStatus='+ $('#tagStatus').val() +'&dateRange=' +$('#date-range').val();
+        };
+        let callback = function(responseText, statusText){
+            if (!afterCheck(responseText, statusText)) {
+                return false;
+            }
+            window.location.href='/blog/tag?menuId='+ $('#menuId').val();
         };
 
         // 【查询】按钮动作
         $('#tag-query').click(function() {
             $('#query-form').ajaxSubmit({
-                success: callback,      //提交后的回调函数
-                error: callback,      //提交后的回调函数
+                success: queryCallback,      //提交后的回调函数
+                error: queryCallback,      //提交后的回调函数
                 timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
             });
             //阻止表单默认提交
