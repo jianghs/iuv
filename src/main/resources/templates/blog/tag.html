@@ -68,7 +68,7 @@
                                 <h3 class="card-title">标签列表</h3>
                             </div>
                             <div class="card-body">
-                                <form id="query-form" th:action="@{/blog/tag}" th:object="${tagQuery}">
+                                <form id="query-form" th:action="@{/blog/tag/query}" th:object="${tagQuery}">
                                     <input type="text" style="display: none" class="form-control" placeholder="" id="menuId" name="menuId" th:value="${param.menuId}">
                                     <div class="row">
                                         <div class="col-sm-3">
@@ -342,11 +342,6 @@
             }
         });
 
-        // 【查询】按钮动作
-        $('#tag-query').click(function() {
-            $('#query-form').submit();
-        });
-
         let dataCheck = function (formData, jqForm, options) {
             const formElement = jqForm[0];              //将jqForm转换为DOM对象
             const tagName = formElement.tagName.value;  //访问jqForm的DOM元素
@@ -374,8 +369,20 @@
                 toastr.error(errInfo);
                 return false;
             }
-            window.location.href='/blog/tag';
+            window.location.href='/blog/tag?menuId='+ $('#menuId').val() +'&tagName='+ $('#tagName').val() +'&tagStatus='+ $('#tagStatus').val() +'&dateRange=' +$('#date-range').val();
         };
+
+        // 【查询】按钮动作
+        $('#tag-query').click(function() {
+            $('#query-form').ajaxSubmit({
+                success: callback,      //提交后的回调函数
+                error: callback,      //提交后的回调函数
+                timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+            });
+            //阻止表单默认提交
+            return false;
+        });
+
         // 【新增】保存按钮动作
         $('#add-button').click(function() {
             $('#add-form').ajaxSubmit({

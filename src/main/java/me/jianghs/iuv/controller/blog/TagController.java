@@ -58,6 +58,15 @@ public class TagController {
         pageContext.addPageCommonElements(model);
         return "blog/tag";
     }
+    /**
+     * 查询页面
+     */
+    @PreAuthorize("hasAuthority('tag_query')")
+    @RequestMapping("/query")
+    public String query(Model model, @ModelAttribute(value = "tagQuery") TagQuery query) {
+        pageContext.addPageCommonElements(model);
+        return "blog/tag";
+    }
 
     /**
      * 新增页面
@@ -128,7 +137,6 @@ public class TagController {
      * @param tagPageCommand
      * @return
      */
-    @PreAuthorize("hasAuthority('tag_page')")
     @PostMapping("/page")
     @ResponseBody
     public PageResult<TagPage> page(@RequestBody @Valid TagPageCommand tagPageCommand) {
