@@ -1,9 +1,6 @@
 package me.jianghs.iuv.controller;
 
 import me.jianghs.iuv.common.context.PageContext;
-import me.jianghs.iuv.common.context.SpringSecurityContext;
-import me.jianghs.iuv.service.IMenuService;
-import me.jianghs.iuv.service.dto.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @className: IndexController
@@ -58,7 +54,7 @@ public class IndexController {
     }
 
     /**
-     * 登录
+     * 注册
      */
     @RequestMapping("/register")
     public String register() {
