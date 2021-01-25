@@ -358,6 +358,14 @@
         };
         let callback = function(responseText, statusText){
             if (statusText != "success") {
+                if (responseText.status = "403") {
+                    toastr.error("权限不足！")
+                    return false;
+                }
+                if (responseText.status = "404") {
+                    toastr.error("资源不存在！")
+                    return false;
+                }
                 toastr.error("处理失败！")
                 return false;
             }
@@ -373,6 +381,7 @@
             $('#add-form').ajaxSubmit({
                 beforeSubmit: dataCheck,  //提交前的回调函数
                 success: callback,      //提交后的回调函数
+                error: callback,      //提交后的回调函数
                 timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
             });
             //阻止表单默认提交
@@ -383,6 +392,7 @@
         $('#edit-submit-button').click(function() {
             $('#edit-form').ajaxSubmit({
                 success: callback,      //提交后的回调函数
+                error: callback,      //提交后的回调函数
                 timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
             });
             //阻止表单默认提交
@@ -393,6 +403,7 @@
         $('#delete-submit-button').click(function() {
             $('#delete-form').ajaxSubmit({
                 success: callback,      //提交后的回调函数
+                error: callback,      //提交后的回调函数
                 timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
             });
             //阻止表单默认提交
