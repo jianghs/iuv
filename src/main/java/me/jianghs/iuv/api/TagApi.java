@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import me.jianghs.iuv.common.context.UserContext;
 import me.jianghs.iuv.common.page.PageResult;
 import me.jianghs.iuv.api.converter.TagConverter;
 import me.jianghs.iuv.api.converter.TagPageConverter;
@@ -16,15 +17,21 @@ import me.jianghs.iuv.api.request.TagRequest;
 import me.jianghs.iuv.api.response.TagPageResponse;
 import me.jianghs.iuv.api.response.TagResponse;
 import me.jianghs.iuv.entity.Tag;
+import me.jianghs.iuv.entity.User;
 import me.jianghs.iuv.service.ITagService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -39,25 +46,46 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/tag")
 public class TagApi {
-    @Resource
+    @Autowired
     private ITagService tagService;
+    @Autowired
+    private UserContext userContext;
 
     @ApiOperation(value = "分页")
     @PostMapping("/page")
     public PageResult<TagPageResponse> page(@RequestBody @Valid TagPageRequest tagPageRequest) {
         log.info("请求：{}", tagPageRequest);
+        if (tagPageRequest.getTagStatus() == 0) {
+            tagPageRequest.setTagStatus(null);
+        }
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+
+        if (StringUtils.isNotBlank(tagPageRequest.getDateRange())) {
+            String[] dates = tagPageRequest.getDateRange().split("~");
+            start = LocalDateTime.parse(dates[0].trim() +" 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            end = LocalDateTime.parse(dates[1].trim() +" 23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        }
+
         Page<Tag> page = new Page<>(tagPageRequest.getCurrent(), tagPageRequest.getSize());
         LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.isNotBlank(tagPageRequest.getTagName()), Tag::getTagName, tagPageRequest.getTagName());
+        queryWrapper.eq(Objects.nonNull(tagPageRequest.getTagStatus()), Tag::getTagStatus, tagPageRequest.getTagStatus());
         // 大于等于 开始时间
-        queryWrapper.ge(Objects.nonNull(tagPageRequest.getStart()) && Objects.isNull(tagPageRequest.getEnd()), Tag::getCreateTime, tagPageRequest.getStart());
+        queryWrapper.ge(Objects.nonNull(start), Tag::getCreateTime, start);
         // 小于等于 结束时间
-        queryWrapper.le(Objects.isNull(tagPageRequest.getStart()) && Objects.nonNull(tagPageRequest.getEnd()), Tag::getCreateTime, tagPageRequest.getEnd());
-        // 大于等于 开始时间 小于等于 结束时间
-        queryWrapper.between(Objects.nonNull(tagPageRequest.getStart()) && Objects.nonNull(tagPageRequest.getEnd()), Tag::getCreateTime, tagPageRequest.getStart(), tagPageRequest.getEnd());
-        queryWrapper.orderByAsc(Tag::getId);
+        queryWrapper.le(Objects.nonNull(end), Tag::getCreateTime, end);
+        queryWrapper.orderByDesc(Tag::getId);
         Page<Tag> tagPage = tagService.page(page, queryWrapper);
         PageResult<TagPageResponse> pageResult = TagPageConverter.INSTANCE.pageCopy(tagPage);
+
+        if (CollectionUtils.isNotEmpty(pageResult.getRecords())) {
+            pageResult.getRecords().stream().map(x -> {
+                User user = userContext.getUserInfo(x.getCreatorId());
+                x.setCreator(Objects.nonNull(user) ? user.getUserName() : "");
+                return x;
+            }).collect(Collectors.toList());
+        }
         log.info("返回：{}", pageResult);
         return pageResult;
     }

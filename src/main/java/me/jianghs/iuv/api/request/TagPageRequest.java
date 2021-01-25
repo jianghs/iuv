@@ -24,15 +24,15 @@ public class TagPageRequest extends PageParam {
     private String tagName;
 
     /**
-     * 开始时间
+     * 标签状态
      */
-    @ApiModelProperty(value = "开始时间")
-    private LocalDateTime start;
+    @ApiModelProperty(value = "标签状态")
+    private Integer tagStatus;
 
     /**
-     * 结束时间
+     * 日期区间
      */
-    @ApiModelProperty(value = "结束时间")
-    private LocalDateTime end;
+    @ApiModelProperty(value = "日期区间")
+    private String dateRange;
 
 }

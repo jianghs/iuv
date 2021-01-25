@@ -50,11 +50,11 @@
                             <ul class="nav nav-treeview">
                                 <div th:each="child : ${node.children}">
                                     <li class="nav-item" th:if="${child.whetherShow == 1}">
-                                        <a th:if="${(node.routing + child.routing) == (firstRouting + secondRouting)}" class="nav-link active" th:href="${node.routing + child.routing}">
+                                        <a th:if="${(node.routing + child.routing) == (firstRouting + secondRouting)}" class="nav-link active" th:href="${node.routing + child.routing} + '?menuId=' + ${child.id}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p th:text="${child.menuName}"></p>
                                         </a>
-                                        <a th:if="${(node.routing + child.routing) != (firstRouting + secondRouting)}" class="nav-link" th:href="${node.routing + child.routing}">
+                                        <a th:if="${(node.routing + child.routing) != (firstRouting + secondRouting)}" class="nav-link" th:href="${node.routing + child.routing} + '?menuId=' + ${child.id}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p th:text="${child.menuName}"></p>
                                         </a>

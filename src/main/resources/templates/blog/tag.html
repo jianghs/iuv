@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IUV | Dashboard</title>
+    <title>IUV | 标签管理</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="/fonts/fonts.css">
@@ -68,7 +68,8 @@
                                 <h3 class="card-title">标签列表</h3>
                             </div>
                             <div class="card-body">
-                                <form id="query-form" th:action="@{/blog/tag/query}" th:object="${tagQuery}">
+                                <form id="query-form" th:action="@{/blog/tag}" th:object="${tagQuery}">
+                                    <input type="text" style="display: none" class="form-control" placeholder="" id="menuId" name="menuId" th:value="${param.menuId}">
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <!-- text input -->
@@ -133,60 +134,9 @@
                                                             <th>排序</th>
                                                             <th>优先级</th>
                                                             <th>状态</th>
-                                                            <th>创建时间</th>
                                                             <th>创建人</th>
+                                                            <th>创建时间</th>
                                                             <th>操作</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr th:each="tag : ${tagList}">
-                                                            <td th:text="${tagStat.index + 1}"></td>
-                                                            <td th:text="${tag.tagName}"></td>
-                                                            <td th:text="${tag.hits}"></td>
-                                                            <td th:text="${tag.tagOrder}"></td>
-                                                            <td th:text="${tag.priority}"></td>
-                                                            <td th:if="${tag.tagStatus == 1}" th:text="启用"></td>
-                                                            <td th:if="${tag.tagStatus == 2}" th:text="停用"></td>
-                                                            <td th:text="${#temporals.format(tag.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                                            <td th:text="${tag.creatorId}"></td>
-                                                            <td>
-                                                                <div class="margin">
-                                                                    <div class="btn-group">
-                                                                        <button type="button" class="btn btn-warning" id="edit-button" data-toggle="modal" data-target="#modal-edit" th:attr="data-whatever=${tag}">编辑</button>
-                                                                    </div>
-                                                                    <div class="btn-group">
-                                                                        <button type="button" class="btn btn-danger" id="delete-button" data-toggle="modal" data-target="#modal-delete" th:attr="data-whatever=${tag.id}">删除</button>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h3 class="card-title">列表2</h3>
-                                                </div>
-                                                <!-- /.card-header -->
-                                                <div class="card-body">
-                                                    <table id="tag-table2" class="table table-bordered table-hover">
-                                                        <thead>
-                                                        <tr>
-<!--                                                            <th>序号</th>-->
-                                                            <th>标签名称</th>
-                                                            <th>点击数</th>
-                                                            <th>排序</th>
-                                                            <th>优先级</th>
-                                                            <th>状态</th>
-                                                            <th>创建人</th>
-                                                            <th>创建时间</th>
-<!--                                                            <th>操作</th>-->
                                                         </tr>
                                                         </thead>
                                                     </table>
@@ -363,7 +313,6 @@
 <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/adminlte.js"></script>
-<script src="/js/common.js"></script>
 <!-- Toastr -->
 <script src="/plugins/toastr/toastr.min.js"></script>
 <!-- DataTables  & Plugins -->
@@ -391,17 +340,6 @@
                 applyLabel: '确定',
                 cancelLabel: '取消',
             }
-        });
-
-        // 表格组件
-        $('#tag-table').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
         });
 
         // 【查询】按钮动作
@@ -463,8 +401,7 @@
 
         $('#modal-edit').on('show.bs.modal', function (event) {
             let button = $(event.relatedTarget); // 触发事件的按钮
-            let tag = button.data('whatever'); // 解析出data-whatever内容
-            let tagObj = str2Json("Tag", tag);
+            let tagObj = button.data('whatever'); // 解析出data-whatever内容
             let modal = $(this);
             modal.find('#edit-tagId').val(tagObj.id);
             modal.find('#edit-tagName').val(tagObj.tagName);
@@ -509,7 +446,7 @@
         };
 
         //初始化表格
-        $("#tag-table2").dataTable({
+        let pageTable = $("#tag-table").dataTable({
             language:lang,  //提示信息
             autoWidth: false,  //禁用自动调整列宽
             stripeClasses: ["odd", "even"],  //为奇偶行加上样式，兼容不支持CSS伪类的场合
@@ -521,7 +458,8 @@
             renderer: "bootstrap",  //渲染样式：Bootstrap和jquery-ui
             pagingType: "simple_numbers",  //分页样式：simple,simple_numbers,full,full_numbers
             columnDefs: [{
-                "targets": 'nosort',  //列的样式名
+                "targets": "_all",
+                "searchable": false,    //包含上样式名‘nosort’的禁止排序
                 "orderable": false    //包含上样式名‘nosort’的禁止排序
             }],
             ajax: function (data, callback, settings) {
@@ -529,6 +467,9 @@
                 let param = {};
                 param.size = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
                 param.current = (data.start / data.length)+1;//当前页码
+                param.tagName = $("#tagName").val();
+                param.tagStatus = $("#tagStatus").val();
+                param.dateRange = $("#date-range").val();
                 //ajax请求数据
                 $.ajax({
                     type: "POST",
@@ -538,39 +479,71 @@
                     data: JSON.stringify(param),  //传入组装的参数
                     dataType: "json",
                     success: function (result) {
-                        //console.log(result);
-                        //setTimeout仅为测试延迟效果
-                        setTimeout(function () {
-                            //封装返回数据
-                            let returnData = {};
-                            // returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
-                            returnData.recordsTotal = result.data.total;//返回数据全部记录
-                            returnData.recordsFiltered = result.data.total;//后台不实现过滤功能，每次查询均视作全部结果
-                            returnData.data = result.data.records;//返回的数据列表
-                            //console.log(returnData);
-                            //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-                            //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
-                            callback(returnData);
-                        }, 200);
+                        //封装返回数据
+                        let returnData = {};
+                        returnData.recordsTotal = result.data.total;//返回数据全部记录
+                        returnData.recordsFiltered = result.data.total;//后台不实现过滤功能，每次查询均视作全部结果
+                        returnData.data = result.data.records;//返回的数据列表
+                        callback(returnData);
                     }
                 });
             },
             //列表表头字段
             columns: [
-                { "data": "tagName" },
-                { "data": "hits" },
+                { "data": null},
+                { "data": "tagName"},
+                { "data": "hits"},
                 { "data": "tagOrder" },
                 { "data": "priority" },
-                { "data": "tagStatus" },
-                { "data": "creatorId" },
-                { "data": "createTime" }
+                {
+                    "data": "tagStatus",
+                    "render": function (data, type, row, meta) {
+                        let content = "";
+                        if (data == "1") {content = "启用";}
+                        if (data == "2") {content = "停用";}
+                        return content;
+                    }
+                },
+                { "data": "creator" },
+                { "data": "createTime" },
+                {
+                    "data": null,
+                    "render": function (data, type, row, meta) {
+                        let json = JSON.stringify(row);
+                        return data = "<div class=\"margin\">" +
+                                        "<div class=\"btn-group\">" +
+                                            "<button type=\"button\" class=\"btn btn-warning\" id=\"edit-button\" data-toggle=\"modal\" data-target=\"#modal-edit\" data-whatever='"+ json +"'>编辑</button>"+
+                                        "</div>" +
+                                        "\n" +
+                                        "<div class=\"btn-group\">" +
+                                            "<button type=\"button\" class=\"btn btn-danger\" id=\"delete-button\" data-toggle=\"modal\" data-target=\"#modal-delete\" data-whatever="+ row.id +">删除</button>" +
+                                        "</div>" +
+                                     "</div>";
+                    }
+                }
             ]
+        }).api();
+
+        pageTable.on('draw.dt',function() {
+            pageTable.column(0, {
+                search: 'applied',
+                order: 'applied'
+            }).nodes().each(function(cell, i) {
+                //i 从0开始，所以这里先加1
+                i = i+1;
+                //服务器模式下获取分页信息，使用 DT 提供的 API 直接获取分页信息
+                let page = pageTable.page.info();
+                //当前第几页，从0开始
+                let pageno = page.page;
+                //每页数据
+                let length = page.length;
+                //行号等于 页数*每页数据长度+行号
+                let columnIndex = (i+pageno*length);
+                cell.innerHTML = columnIndex;
+            });
         });
-
-
-
-
     })
+
 </script>
 </body>
 </html>

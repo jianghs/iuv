@@ -62,6 +62,12 @@ public class TagPageResponse implements Serializable {
     @ApiModelProperty(value = "创建者id")
     private Long creatorId;
 
+    /**
+     * 创建者
+     */
+    @ApiModelProperty(value = "创建者")
+    private String creator;
+
     @ApiModelProperty(value = "修改时间")
     private LocalDateTime modifyTime;
 
