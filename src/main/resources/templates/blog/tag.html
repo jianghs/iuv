@@ -504,16 +504,16 @@
                 $.ajax({
                     type: "POST",
                     contentType: "application/json",
-                    url: "/api/tag/page",
+                    url: "/blog/tag/page",
                     cache: false,  //禁用缓存
                     data: JSON.stringify(param),  //传入组装的参数
                     dataType: "json",
                     success: function (result) {
                         //封装返回数据
                         let returnData = {};
-                        returnData.recordsTotal = result.data.total;//返回数据全部记录
-                        returnData.recordsFiltered = result.data.total;//后台不实现过滤功能，每次查询均视作全部结果
-                        returnData.data = result.data.records;//返回的数据列表
+                        returnData.recordsTotal = result.total;//返回数据全部记录
+                        returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
+                        returnData.data = result.records;//返回的数据列表
                         callback(returnData);
                     }
                 });

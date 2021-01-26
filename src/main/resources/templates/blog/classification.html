@@ -127,7 +127,8 @@
                                                         <thead>
                                                         <tr>
                                                             <th>序号</th>
-                                                            <th>标签名称</th>
+                                                            <th>分类名称</th>
+                                                            <th>分类介绍</th>
                                                             <th>点击数</th>
                                                             <th>排序</th>
                                                             <th>优先级</th>
@@ -153,7 +154,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">新增标签</h4>
+                            <h4 class="modal-title">新增分类</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -163,19 +164,23 @@
                                 <!-- general form elements -->
                                 <div class="card card-primary">
                                     <!-- form start -->
-                                    <form id="add-form" th:action="@{/blog/tag/add}">
+                                    <form id="add-form" th:action="@{/blog/classification/add}">
                                         <div class="card-body">
                                             <div class="form-group">
-                                                <label>标签名称</label>
-                                                <input type="text" class="form-control" placeholder="" id="tagName" name="tagName">
+                                                <label>分类名称</label>
+                                                <input type="text" class="form-control" placeholder="" id="classificationName" name="classificationName">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>分类介绍</label>
+                                                <input type="text" class="form-control" placeholder="" id="introduction" name="introduction">
                                             </div>
                                             <div class="form-group">
                                                 <label>排序</label>
-                                                <input type="text" class="form-control" placeholder="" id="priority" name="priority">
+                                                <input type="text" class="form-control" placeholder="" id="classificationOrder" name="classificationOrder">
                                             </div>
                                             <div class="form-group">
                                                 <label>优先级</label>
-                                                <input type="text" class="form-control" placeholder="" id="tagOrder" name="tagOrder">
+                                                <input type="text" class="form-control" placeholder="" id="priority" name="priority">
                                             </div>
                                         </div>
                                         <!-- /.card-body -->
@@ -195,7 +200,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">编辑标签</h4>
+                            <h4 class="modal-title">编辑分类</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -205,24 +210,28 @@
                                 <!-- general form elements -->
                                 <div class="card card-primary">
                                     <!-- form start -->
-                                    <form id="edit-form" th:action="@{/blog/tag/edit}">
+                                    <form id="edit-form" th:action="@{/blog/classification/edit}">
                                         <div class="card-body">
-                                            <input type="text" style="display: none" class="form-control" placeholder="" id="edit-tagId" name="id">
+                                            <input type="text" style="display: none" class="form-control" placeholder="" id="edit-classificationId" name="id">
                                             <div class="form-group">
-                                                <label>标签名称</label>
-                                                <input type="text" class="form-control" placeholder="" id="edit-tagName" name="tagName" disabled>
+                                                <label>分类名称</label>
+                                                <input type="text" class="form-control" placeholder="" id="edit-classificationName" name="classificationName" disabled>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>分类介绍</label>
+                                                <input type="text" class="form-control" placeholder="" id="edit-introduction" name="introduction">
                                             </div>
                                             <div class="form-group">
                                                 <label>排序</label>
-                                                <input type="text" class="form-control" placeholder="" id="edit-priority" name="priority">
+                                                <input type="text" class="form-control" placeholder="" id="edit-classificationOrder" name="classificationOrder">
                                             </div>
                                             <div class="form-group">
                                                 <label>优先级</label>
-                                                <input type="text" class="form-control" placeholder="" id="edit-tagOrder" name="tagOrder">
+                                                <input type="text" class="form-control" placeholder="" id="edit-priority" name="priority">
                                             </div>
                                             <div class="form-group">
-                                                <label>标签状态</label>
-                                                <select class="form-control" id="edit-status-selector" name="tagStatus">
+                                                <label>分类状态</label>
+                                                <select class="form-control" id="edit-status-selector" name="classificationStatus">
                                                     <option value="1">启用</option>
                                                     <option value="2">停用</option>
                                                 </select>
@@ -250,8 +259,8 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form id="delete-form" th:action="@{/blog/tag/delete}">
-                            <input type="text" style="display: none" class="form-control" placeholder="" id="delete-tagId" name="id">
+                        <form id="delete-form" th:action="@{/blog/classification/delete}">
+                            <input type="text" style="display: none" class="form-control" placeholder="" id="delete-classificationId" name="id">
                             <div class="modal-body">
                                 <p>是否删除该条记录?</p>
                             </div>
@@ -343,9 +352,9 @@
 
         let dataCheck = function(formData, jqForm, options) {
             const formElement = jqForm[0];              //将jqForm转换为DOM对象
-            const tagName = formElement.tagName.value;  //访问jqForm的DOM元素
-            if (tagName === '') {
-                toastr.error('标签名称不得为空！')
+            const classificationName = formElement.classificationName.value;  //访问jqForm的DOM元素
+            if (classificationName === '') {
+                toastr.error('分类名称不得为空！')
                 return false;
             }
             return true;
@@ -374,17 +383,17 @@
             if (!afterCheck(responseText, statusText)) {
                 return false;
             }
-            window.location.href='/blog/tag?menuId='+ $('#menuId').val() +'&tagName='+ $('#tagName').val() +'&tagStatus='+ $('#tagStatus').val() +'&dateRange=' +$('#date-range').val();
+            window.location.href='/blog/classification?menuId='+ $('#menuId').val() +'&classificationName='+ $('#classificationName').val() +'&classificationStatus='+ $('#classificationStatus').val() +'&dateRange=' +$('#date-range').val();
         };
         let callback = function(responseText, statusText){
             if (!afterCheck(responseText, statusText)) {
                 return false;
             }
-            window.location.href='/blog/tag?menuId='+ $('#menuId').val();
+            window.location.href='/blog/classification?menuId='+ $('#menuId').val();
         };
 
         // 【查询】按钮动作
-        $('#tag-query').click(function() {
+        $('#classification-query').click(function() {
             $('#query-form').ajaxSubmit({
                 success: queryCallback,      //提交后的回调函数
                 error: queryCallback,      //提交后的回调函数
@@ -430,20 +439,21 @@
 
         $('#modal-edit').on('show.bs.modal', function (event) {
             let button = $(event.relatedTarget); // 触发事件的按钮
-            let tagObj = button.data('whatever'); // 解析出data-whatever内容
+            let classificationObj = button.data('whatever'); // 解析出data-whatever内容
             let modal = $(this);
-            modal.find('#edit-tagId').val(tagObj.id);
-            modal.find('#edit-tagName').val(tagObj.tagName);
-            modal.find('#edit-priority').val(tagObj.priority);
-            modal.find('#edit-tagOrder').val(tagObj.tagOrder);
-            modal.find('#edit-status-selector').val(tagObj.tagStatus);
+            modal.find('#edit-classificationId').val(classificationObj.id);
+            modal.find('#edit-classificationName').val(classificationObj.classificationName);
+            modal.find('#edit-introduction').val(classificationObj.introduction);
+            modal.find('#edit-priority').val(classificationObj.priority);
+            modal.find('#edit-classificationOrder').val(classificationObj.classificationOrder);
+            modal.find('#edit-status-selector').val(classificationObj.classificationStatus);
         });
 
         $('#modal-delete').on('show.bs.modal', function (event) {
             let button = $(event.relatedTarget); // 触发事件的按钮
             let id = button.data('whatever'); // 解析出data-whatever内容
             let modal = $(this);
-            modal.find('#delete-tagId').val(id);
+            modal.find('#delete-classificationId').val(id);
         });
 
 
@@ -475,7 +485,7 @@
         };
 
         //初始化表格
-        let pageTable = $("#tag-table").dataTable({
+        let pageTable = $("#classification-table").dataTable({
             language:lang,  //提示信息
             autoWidth: false,  //禁用自动调整列宽
             stripeClasses: ["odd", "even"],  //为奇偶行加上样式，兼容不支持CSS伪类的场合
@@ -496,23 +506,23 @@
                 let param = {};
                 param.size = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
                 param.current = (data.start / data.length)+1;//当前页码
-                param.tagName = $("#tagName").val();
-                param.tagStatus = $("#tagStatus").val();
+                param.classificationName = $("#classificationName").val();
+                param.classificationStatus = $("#classificationStatus").val();
                 param.dateRange = $("#date-range").val();
                 //ajax请求数据
                 $.ajax({
                     type: "POST",
                     contentType: "application/json",
-                    url: "/api/tag/page",
+                    url: "/blog/classification/page",
                     cache: false,  //禁用缓存
                     data: JSON.stringify(param),  //传入组装的参数
                     dataType: "json",
                     success: function (result) {
                         //封装返回数据
                         let returnData = {};
-                        returnData.recordsTotal = result.data.total;//返回数据全部记录
-                        returnData.recordsFiltered = result.data.total;//后台不实现过滤功能，每次查询均视作全部结果
-                        returnData.data = result.data.records;//返回的数据列表
+                        returnData.recordsTotal = result.total;//返回数据全部记录
+                        returnData.recordsFiltered = result.total;//后台不实现过滤功能，每次查询均视作全部结果
+                        returnData.data = result.records;//返回的数据列表
                         callback(returnData);
                     }
                 });
@@ -520,12 +530,13 @@
             //列表表头字段
             columns: [
                 { "data": null},
-                { "data": "tagName"},
+                { "data": "classificationName"},
+                { "data": "introduction"},
                 { "data": "hits"},
-                { "data": "tagOrder" },
+                { "data": "classificationOrder" },
                 { "data": "priority" },
                 {
-                    "data": "tagStatus",
+                    "data": "classificationStatus",
                     "render": function (data, type, row, meta) {
                         let content = "";
                         if (data == "1") {content = "启用";}

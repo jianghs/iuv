@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/classification")
-public class ClassificationController {
+public class ClassificationApi {
 
 
 

@@ -8,16 +8,12 @@ import me.jianghs.iuv.common.context.PageContext;
 import me.jianghs.iuv.common.context.UserContext;
 import me.jianghs.iuv.common.page.PageResult;
 import me.jianghs.iuv.controller.blog.command.ClassificationCommand;
-import me.jianghs.iuv.controller.blog.command.TagCommand;
 import me.jianghs.iuv.controller.blog.converter.ClassificationPageConverter;
-import me.jianghs.iuv.controller.blog.converter.TagPageConverter;
 import me.jianghs.iuv.controller.blog.query.ClassificationPageQuery;
 import me.jianghs.iuv.controller.blog.query.ClassificationQuery;
 import me.jianghs.iuv.controller.blog.query.TagQuery;
 import me.jianghs.iuv.controller.blog.result.ClassificationPage;
-import me.jianghs.iuv.controller.blog.result.TagPage;
 import me.jianghs.iuv.entity.Classification;
-import me.jianghs.iuv.entity.Tag;
 import me.jianghs.iuv.entity.User;
 import me.jianghs.iuv.service.IClassificationService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -67,7 +63,7 @@ public class ClassificationController {
     /**
      * 查询页面
      */
-//    @PreAuthorize("hasAuthority('tag_query')")
+    @PreAuthorize("hasAuthority('classification_query')")
     @RequestMapping("/query")
     public String query(Model model, @ModelAttribute(value = "classificationQuery") ClassificationQuery query) {
         pageContext.addPageCommonElements(model);
@@ -77,7 +73,7 @@ public class ClassificationController {
     /**
      * 新增页面
      */
-//    @PreAuthorize("hasAuthority('tag_add')")
+    @PreAuthorize("hasAuthority('classification_add')")
     @RequestMapping("/add")
     public String add(Model model, @ModelAttribute(value = "classificationCommand") ClassificationCommand classificationCommand) {
         pageContext.addPageCommonElements(model);
@@ -100,7 +96,7 @@ public class ClassificationController {
     /**
      * 编辑页面
      */
-//    @PreAuthorize("hasAuthority('tag_edit')")
+    @PreAuthorize("hasAuthority('classification_edit')")
     @RequestMapping("/edit")
     public String edit(Model model, @ModelAttribute(value = "classificationCommand") ClassificationCommand classificationCommand) {
         pageContext.addPageCommonElements(model);
@@ -111,6 +107,7 @@ public class ClassificationController {
         classification.setIntroduction(classificationCommand.getIntroduction());
         classification.setClassificationOrder(classificationCommand.getClassificationOrder());
         classification.setPriority(classificationCommand.getPriority());
+        classification.setClassificationStatus(classificationCommand.getClassificationStatus());
         classification.setModifierId(userContext.getUserInfo().getId());
         try {
             classificationService.updateClassification(classification);
@@ -124,7 +121,7 @@ public class ClassificationController {
     /**
      * 删除页面
      */
-//    @PreAuthorize("hasAuthority('tag_delete')")
+    @PreAuthorize("hasAuthority('classification_delete')")
     @RequestMapping("/delete")
     public String add(Model model, @ModelAttribute(value = "id") Long id) {
         pageContext.addPageCommonElements(model);
