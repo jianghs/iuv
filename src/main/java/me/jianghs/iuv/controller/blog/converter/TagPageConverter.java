@@ -1,7 +1,7 @@
 package me.jianghs.iuv.controller.blog.converter;
 
 import me.jianghs.iuv.common.converter.PageMapping;
-import me.jianghs.iuv.controller.blog.TagPage;
+import me.jianghs.iuv.controller.blog.result.TagPage;
 import me.jianghs.iuv.entity.Tag;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

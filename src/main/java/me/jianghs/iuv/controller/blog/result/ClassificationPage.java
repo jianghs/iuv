@@ -1,7 +1,7 @@
-package me.jianghs.iuv.controller.blog;
+package me.jianghs.iuv.controller.blog.result;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,16 +15,22 @@ import java.time.LocalDateTime;
  * @version: 1.0
  */
 @Data
-public class TagPage implements Serializable {
+public class ClassificationPage implements Serializable {
+
     /**
      * 主键
      */
     private Long id;
 
     /**
-     * 标签名称
+     * 分类名称
      */
-    private String tagName;
+    private String classificationName;
+
+    /**
+     * 分类介绍
+     */
+    private String introduction;
 
     /**
      * 点击数
@@ -34,7 +40,7 @@ public class TagPage implements Serializable {
     /**
      * 排序
      */
-    private Integer tagOrder;
+    private Integer classificationOrder;
 
     /**
      * 优先级
@@ -44,7 +50,7 @@ public class TagPage implements Serializable {
     /**
      * 状态 1-正常 2-停用
      */
-    private Integer tagStatus;
+    private Integer classificationStatus;
 
     private LocalDateTime createTime;
 
@@ -52,7 +58,6 @@ public class TagPage implements Serializable {
      * 创建者id
      */
     private Long creatorId;
-
     /**
      * 创建者
      */
@@ -64,5 +69,7 @@ public class TagPage implements Serializable {
      * 修改人id
      */
     private Long modifierId;
+
+
 
 }

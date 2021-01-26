@@ -3,9 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IUV | Dashboard</title>
+    <title>IUV | 分类管理</title>
 
-    <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="/fonts/fonts.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
@@ -25,6 +24,12 @@
     <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -39,12 +44,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">标签管理</h1>
+                        <h1 class="m-0">分类管理</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">博客管理</a></li>
-                            <li class="breadcrumb-item active">标签管理</li>
+                            <li class="breadcrumb-item active">分类管理</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -52,13 +57,218 @@
         </div>
         <!-- /.content-header -->
 
-        <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <h1>标签管理123</h1>
-            </div><!-- /.container-fluid -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">分类列表</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="query-form" th:action="@{/blog/classification/query}" th:object="${classificationQuery}">
+                                    <input type="text" style="display: none" class="form-control" placeholder="" id="menuId" name="menuId" th:value="${param.menuId}">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <!-- text input -->
+                                            <div class="form-group">
+                                                <label>分类名称</label>
+                                                <input type="text" th:field="*{classificationName}" class="form-control" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <!-- select -->
+                                            <div class="form-group">
+                                                <label>分类状态</label>
+                                                <select th:field="*{classificationStatus}" class="form-control">
+                                                    <option th:selected="*{classificationStatus == 0}" th:value="0">全部</option>
+                                                    <option th:selected="*{classificationStatus == 1}" th:value="1">启用</option>
+                                                    <option th:selected="*{classificationStatus == 2}" th:value="2">停用</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>创建日期:</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                      <span class="input-group-text">
+                                                        <i class="far fa-calendar-alt"></i>
+                                                      </span>
+                                                    </div>
+                                                    <input type="text" th:field="*{dateRange}" class="form-control float-right" id="date-range">
+                                                </div>
+                                                <!-- /.input group -->
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <div class="form-group">
+                                                <label>&#12288;</label>
+                                                <button type="button" class="btn btn-block btn-primary" id="classification-query">查询</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <div class="form-group">
+                                                <label>&#12288;</label>
+                                                <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#modal-add">新增</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h3 class="card-title">列表</h3>
+                                                </div>
+                                                <!-- /.card-header -->
+                                                <div class="card-body">
+                                                    <table id="classification-table" class="table table-bordered table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>序号</th>
+                                                            <th>标签名称</th>
+                                                            <th>点击数</th>
+                                                            <th>排序</th>
+                                                            <th>优先级</th>
+                                                            <th>状态</th>
+                                                            <th>创建人</th>
+                                                            <th>创建时间</th>
+                                                            <th>操作</th>
+                                                        </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modal-add">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">新增标签</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <!-- general form elements -->
+                                <div class="card card-primary">
+                                    <!-- form start -->
+                                    <form id="add-form" th:action="@{/blog/tag/add}">
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label>标签名称</label>
+                                                <input type="text" class="form-control" placeholder="" id="tagName" name="tagName">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>排序</label>
+                                                <input type="text" class="form-control" placeholder="" id="priority" name="priority">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>优先级</label>
+                                                <input type="text" class="form-control" placeholder="" id="tagOrder" name="tagOrder">
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer">
+                                            <button type="submit" class="btn btn-primary" id="add-button">保存</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <div class="modal fade" id="modal-edit">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">编辑标签</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <!-- general form elements -->
+                                <div class="card card-primary">
+                                    <!-- form start -->
+                                    <form id="edit-form" th:action="@{/blog/tag/edit}">
+                                        <div class="card-body">
+                                            <input type="text" style="display: none" class="form-control" placeholder="" id="edit-tagId" name="id">
+                                            <div class="form-group">
+                                                <label>标签名称</label>
+                                                <input type="text" class="form-control" placeholder="" id="edit-tagName" name="tagName" disabled>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>排序</label>
+                                                <input type="text" class="form-control" placeholder="" id="edit-priority" name="priority">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>优先级</label>
+                                                <input type="text" class="form-control" placeholder="" id="edit-tagOrder" name="tagOrder">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>标签状态</label>
+                                                <select class="form-control" id="edit-status-selector" name="tagStatus">
+                                                    <option value="1">启用</option>
+                                                    <option value="2">停用</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer">
+                                            <button type="submit" class="btn btn-primary" id="edit-submit-button">提交</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <div class="modal fade" id="modal-delete">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">删除</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="delete-form" th:action="@{/blog/tag/delete}">
+                            <input type="text" style="display: none" class="form-control" placeholder="" id="delete-tagId" name="id">
+                            <div class="modal-body">
+                                <p>是否删除该条记录?</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary" id="delete-submit-button">确定</button>
+                            </div>
+                        </form>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+            <div id="err-info" style="display: none" th:text="${errorInfo}"></div>
         </section>
-        <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
     <div th:replace="common/footer :: copy"></div>
@@ -73,6 +283,7 @@
 
 <!-- jQuery -->
 <script src="/plugins/jquery/jquery.min.js"></script>
+<script src="/plugins/jquery/jquery.form.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="/plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -101,9 +312,267 @@
 <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="/js/pages/dashboard.js"></script>
+<!-- Toastr -->
+<script src="/plugins/toastr/toastr.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/plugins/jszip/jszip.min.js"></script>
+<script src="/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script>
+    $(function () {
+        //日期范围组件
+        $('#date-range').daterangepicker({
+            startDate: new Date(),
+            endDate: new Date(),
+            locale: {
+                format: 'YYYY-MM-DD',
+                separator: ' ~ ',
+                applyLabel: '确定',
+                cancelLabel: '取消',
+            }
+        });
+
+        let dataCheck = function(formData, jqForm, options) {
+            const formElement = jqForm[0];              //将jqForm转换为DOM对象
+            const tagName = formElement.tagName.value;  //访问jqForm的DOM元素
+            if (tagName === '') {
+                toastr.error('标签名称不得为空！')
+                return false;
+            }
+            return true;
+        };
+        let afterCheck = function(responseText, statusText) {
+            if (statusText != "success") {
+                if (responseText.status = "403") {
+                    toastr.error("权限不足！")
+                    return false;
+                }
+                if (responseText.status = "404") {
+                    toastr.error("资源不存在！")
+                    return false;
+                }
+                toastr.error("处理失败！")
+                return false;
+            }
+            const errInfo = $(responseText).find('#err-info').text();
+            if (errInfo != "") {
+                toastr.error(errInfo);
+                return false;
+            }
+            return true;
+        }
+        let queryCallback = function(responseText, statusText){
+            if (!afterCheck(responseText, statusText)) {
+                return false;
+            }
+            window.location.href='/blog/tag?menuId='+ $('#menuId').val() +'&tagName='+ $('#tagName').val() +'&tagStatus='+ $('#tagStatus').val() +'&dateRange=' +$('#date-range').val();
+        };
+        let callback = function(responseText, statusText){
+            if (!afterCheck(responseText, statusText)) {
+                return false;
+            }
+            window.location.href='/blog/tag?menuId='+ $('#menuId').val();
+        };
+
+        // 【查询】按钮动作
+        $('#tag-query').click(function() {
+            $('#query-form').ajaxSubmit({
+                success: queryCallback,      //提交后的回调函数
+                error: queryCallback,      //提交后的回调函数
+                timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+            });
+            //阻止表单默认提交
+            return false;
+        });
+
+        // 【新增】保存按钮动作
+        $('#add-button').click(function() {
+            $('#add-form').ajaxSubmit({
+                beforeSubmit: dataCheck,  //提交前的回调函数
+                success: callback,      //提交后的回调函数
+                error: callback,      //提交后的回调函数
+                timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+            });
+            //阻止表单默认提交
+            return false;
+        });
+
+        // 【编辑】保存按钮动作
+        $('#edit-submit-button').click(function() {
+            $('#edit-form').ajaxSubmit({
+                success: callback,      //提交后的回调函数
+                error: callback,      //提交后的回调函数
+                timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+            });
+            //阻止表单默认提交
+            return false;
+        });
+
+        // 【删除】保存按钮动作
+        $('#delete-submit-button').click(function() {
+            $('#delete-form').ajaxSubmit({
+                success: callback,      //提交后的回调函数
+                error: callback,      //提交后的回调函数
+                timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+            });
+            //阻止表单默认提交
+            return false;
+        });
+
+        $('#modal-edit').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget); // 触发事件的按钮
+            let tagObj = button.data('whatever'); // 解析出data-whatever内容
+            let modal = $(this);
+            modal.find('#edit-tagId').val(tagObj.id);
+            modal.find('#edit-tagName').val(tagObj.tagName);
+            modal.find('#edit-priority').val(tagObj.priority);
+            modal.find('#edit-tagOrder').val(tagObj.tagOrder);
+            modal.find('#edit-status-selector').val(tagObj.tagStatus);
+        });
+
+        $('#modal-delete').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget); // 触发事件的按钮
+            let id = button.data('whatever'); // 解析出data-whatever内容
+            let modal = $(this);
+            modal.find('#delete-tagId').val(id);
+        });
+
+
+        //提示信息
+        let lang = {
+            "sProcessing": "处理中...",
+            "sLengthMenu": "每页 _MENU_ 项",
+            "sZeroRecords": "没有匹配结果",
+            "sInfo": "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
+            "sInfoEmpty": "当前显示第 0 至 0 项，共 0 项",
+            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+            "sInfoPostFix": "",
+            "sSearch": "搜索:",
+            "sUrl": "",
+            "sEmptyTable": "表中数据为空",
+            "sLoadingRecords": "载入中...",
+            "sInfoThousands": ",",
+            "oPaginate": {
+                "sFirst": "首页",
+                "sPrevious": "上页",
+                "sNext": "下页",
+                "sLast": "末页",
+                "sJump": "跳转"
+            },
+            "oAria": {
+                "sSortAscending": ": 以升序排列此列",
+                "sSortDescending": ": 以降序排列此列"
+            }
+        };
+
+        //初始化表格
+        let pageTable = $("#tag-table").dataTable({
+            language:lang,  //提示信息
+            autoWidth: false,  //禁用自动调整列宽
+            stripeClasses: ["odd", "even"],  //为奇偶行加上样式，兼容不支持CSS伪类的场合
+            processing: true,  //隐藏加载提示,自行处理
+            serverSide: true,  //启用服务器端分页
+            searching: false,  //禁用原生搜索
+            orderMulti: false,  //启用多列排序
+            order: [],  //取消默认排序查询,否则复选框一列会出现小箭头
+            renderer: "bootstrap",  //渲染样式：Bootstrap和jquery-ui
+            pagingType: "simple_numbers",  //分页样式：simple,simple_numbers,full,full_numbers
+            columnDefs: [{
+                "targets": "_all",
+                "searchable": false,    //包含上样式名‘nosort’的禁止排序
+                "orderable": false    //包含上样式名‘nosort’的禁止排序
+            }],
+            ajax: function (data, callback, settings) {
+                //封装请求参数
+                let param = {};
+                param.size = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+                param.current = (data.start / data.length)+1;//当前页码
+                param.tagName = $("#tagName").val();
+                param.tagStatus = $("#tagStatus").val();
+                param.dateRange = $("#date-range").val();
+                //ajax请求数据
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "/api/tag/page",
+                    cache: false,  //禁用缓存
+                    data: JSON.stringify(param),  //传入组装的参数
+                    dataType: "json",
+                    success: function (result) {
+                        //封装返回数据
+                        let returnData = {};
+                        returnData.recordsTotal = result.data.total;//返回数据全部记录
+                        returnData.recordsFiltered = result.data.total;//后台不实现过滤功能，每次查询均视作全部结果
+                        returnData.data = result.data.records;//返回的数据列表
+                        callback(returnData);
+                    }
+                });
+            },
+            //列表表头字段
+            columns: [
+                { "data": null},
+                { "data": "tagName"},
+                { "data": "hits"},
+                { "data": "tagOrder" },
+                { "data": "priority" },
+                {
+                    "data": "tagStatus",
+                    "render": function (data, type, row, meta) {
+                        let content = "";
+                        if (data == "1") {content = "启用";}
+                        if (data == "2") {content = "停用";}
+                        return content;
+                    }
+                },
+                { "data": "creator" },
+                { "data": "createTime" },
+                {
+                    "data": null,
+                    "render": function (data, type, row, meta) {
+                        let json = JSON.stringify(row);
+                        return data = "<div class=\"margin\">" +
+                            "<div class=\"btn-group\">" +
+                            "<button type=\"button\" class=\"btn btn-warning\" id=\"edit-button\" data-toggle=\"modal\" data-target=\"#modal-edit\" data-whatever='"+ json +"'>编辑</button>"+
+                            "</div>" +
+                            "\n" +
+                            "<div class=\"btn-group\">" +
+                            "<button type=\"button\" class=\"btn btn-danger\" id=\"delete-button\" data-toggle=\"modal\" data-target=\"#modal-delete\" data-whatever="+ row.id +">删除</button>" +
+                            "</div>" +
+                            "</div>";
+                    }
+                }
+            ]
+        }).api();
+
+        pageTable.on('draw.dt',function() {
+            pageTable.column(0, {
+                search: 'applied',
+                order: 'applied'
+            }).nodes().each(function(cell, i) {
+                //i 从0开始，所以这里先加1
+                i = i+1;
+                //服务器模式下获取分页信息，使用 DT 提供的 API 直接获取分页信息
+                let page = pageTable.page.info();
+                //当前第几页，从0开始
+                let pageno = page.page;
+                //每页数据
+                let length = page.length;
+                //行号等于 页数*每页数据长度+行号
+                let columnIndex = (i+pageno*length);
+                cell.innerHTML = columnIndex;
+            });
+        });
+    })
+
+</script>
 </body>
 </html>

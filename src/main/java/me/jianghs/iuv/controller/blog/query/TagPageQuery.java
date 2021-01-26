@@ -1,19 +1,17 @@
-package me.jianghs.iuv.controller.blog.command;
+package me.jianghs.iuv.controller.blog.query;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import me.jianghs.iuv.common.page.PageParam;
 
 /**
- * @className: TagPageRequest
+ * @className: TagPageQuery
  * @description:
  * @author: jianghs430
- * @createDate: 2020/12/30 17:26
+ * @createDate: 2021/1/26 9:42
  * @version: 1.0
  */
 @Data
-public class TagPageCommand extends PageParam {
+public class TagPageQuery extends PageParam {
     /**
      * 标签名
      */
@@ -28,5 +26,4 @@ public class TagPageCommand extends PageParam {
      * 日期区间
      */
     private String dateRange;
-
 }

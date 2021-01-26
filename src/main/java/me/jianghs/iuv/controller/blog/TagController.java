@@ -8,9 +8,10 @@ import me.jianghs.iuv.common.context.PageContext;
 import me.jianghs.iuv.common.context.UserContext;
 import me.jianghs.iuv.common.page.PageResult;
 import me.jianghs.iuv.controller.blog.command.TagCommand;
-import me.jianghs.iuv.controller.blog.command.TagPageCommand;
 import me.jianghs.iuv.controller.blog.converter.TagPageConverter;
+import me.jianghs.iuv.controller.blog.query.TagPageQuery;
 import me.jianghs.iuv.controller.blog.query.TagQuery;
+import me.jianghs.iuv.controller.blog.result.TagPage;
 import me.jianghs.iuv.entity.Tag;
 import me.jianghs.iuv.entity.User;
 import me.jianghs.iuv.service.ITagService;
@@ -22,8 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -73,7 +72,7 @@ public class TagController {
      */
     @PreAuthorize("hasAuthority('tag_add')")
     @RequestMapping("/add")
-    public String add(Model model, @ModelAttribute(value = "tagCommand") TagCommand tagCommand, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String add(Model model, @ModelAttribute(value = "tagCommand") TagCommand tagCommand) throws Exception {
         pageContext.addPageCommonElements(model);
 
         Tag tag = new Tag();
@@ -134,29 +133,29 @@ public class TagController {
 
     /**
      * 分页
-     * @param tagPageCommand
+     * @param tagPageQuery
      * @return
      */
     @PostMapping("/page")
     @ResponseBody
-    public PageResult<TagPage> page(@RequestBody @Valid TagPageCommand tagPageCommand) {
-        log.info("请求：{}", tagPageCommand);
-        if (tagPageCommand.getTagStatus() == 0) {
-            tagPageCommand.setTagStatus(null);
+    public PageResult<TagPage> page(@RequestBody @Valid TagPageQuery tagPageQuery) {
+        log.info("请求：{}", tagPageQuery);
+        if (tagPageQuery.getTagStatus() == 0) {
+            tagPageQuery.setTagStatus(null);
         }
         LocalDateTime start = null;
         LocalDateTime end = null;
 
-        if (StringUtils.isNotBlank(tagPageCommand.getDateRange())) {
-            String[] dates = tagPageCommand.getDateRange().split("~");
+        if (StringUtils.isNotBlank(tagPageQuery.getDateRange())) {
+            String[] dates = tagPageQuery.getDateRange().split("~");
             start = LocalDateTime.parse(dates[0].trim() +" 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             end = LocalDateTime.parse(dates[1].trim() +" 23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
 
-        Page<Tag> page = new Page<>(tagPageCommand.getCurrent(), tagPageCommand.getSize());
+        Page<Tag> page = new Page<>(tagPageQuery.getCurrent(), tagPageQuery.getSize());
         LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.like(StringUtils.isNotBlank(tagPageCommand.getTagName()), Tag::getTagName, tagPageCommand.getTagName());
-        queryWrapper.eq(Objects.nonNull(tagPageCommand.getTagStatus()), Tag::getTagStatus, tagPageCommand.getTagStatus());
+        queryWrapper.like(StringUtils.isNotBlank(tagPageQuery.getTagName()), Tag::getTagName, tagPageQuery.getTagName());
+        queryWrapper.eq(Objects.nonNull(tagPageQuery.getTagStatus()), Tag::getTagStatus, tagPageQuery.getTagStatus());
         // 大于等于 开始时间
         queryWrapper.ge(Objects.nonNull(start), Tag::getCreateTime, start);
         // 小于等于 结束时间
