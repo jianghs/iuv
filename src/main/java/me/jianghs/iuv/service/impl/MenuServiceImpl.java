@@ -38,6 +38,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     /**
      * 创建根节点列表
+     *
      * @param username 用户名
      * @return 根节点列表
      */
@@ -60,7 +61,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     /**
      * 递归查询所有孩子节点
-     * @param node 当前节点
+     *
+     * @param node     当前节点
      * @param allNodes 所有节点列表
      * @return 孩子节点
      */

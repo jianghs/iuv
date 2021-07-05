@@ -18,6 +18,7 @@ public interface IMenuService extends IService<Menu> {
 
     /**
      * 创建根节点列表
+     *
      * @param username 用户名
      * @return 根节点列表
      */

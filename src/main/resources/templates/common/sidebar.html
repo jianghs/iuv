@@ -5,68 +5,73 @@
     <title>Title</title>
 </head>
 <body>
-    <!-- 左边导航栏 -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4" th:fragment="navbar(firstRouting,secondRouting)">
-        <a href="/index" class="brand-link">
-            <img src="/img/AdminLTELogo.png" alt="IUV Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">I UV</span>
-        </a>
+<!-- 左边导航栏 -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4" th:fragment="navbar(firstRouting,secondRouting)">
+    <a href="/index" class="brand-link">
+        <img src="/img/AdminLTELogo.png" alt="IUV Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">I UV</span>
+    </a>
 
-        <!-- 用户信息 -->
-        <div class="sidebar">
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="/img/user2-160x160.jpg" class="img-circle elevation-2" alt="用户头像">
-                </div>
-                <div class="info">
-                    <!--/*@thymesVar id="username" type="java.lang.String"*/-->
-                    <a href="#" class="d-block" th:text="${username}"></a>
-                </div>
+    <!-- 用户信息 -->
+    <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="/img/user2-160x160.jpg" class="img-circle elevation-2" alt="用户头像">
             </div>
-
-            <!-- 左侧搜索 -->
-            <div class="form-inline">
-                <div class="input-group" data-widget="sidebar-search">
-                    <input class="form-control form-control-sidebar" type="search" placeholder="搜索" aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-sidebar">
-                            <i class="fas fa-search fa-fw"></i>
-                        </button>
-                    </div>
-                </div>
+            <div class="info">
+                <!--/*@thymesVar id="username" type="java.lang.String"*/-->
+                <a href="#" class="d-block" th:text="${username}"></a>
             </div>
-
-            <!-- 菜单 -->
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
-                    <!--/*@thymesVar id="nodeList" type="java.util.List"*/-->
-                    <div th:each="node : ${nodeList}">
-                        <li class="nav-item menu-open"  th:if="${node.whetherShow == 1}">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-copy"></i>
-                                <p th:text="${node.menuName}"></p>
-                                <i class="right fas fa-angle-left"></i>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <div th:each="child : ${node.children}">
-                                    <li class="nav-item" th:if="${child.whetherShow == 1}">
-                                        <a th:if="${(node.routing + child.routing) == (firstRouting + secondRouting)}" class="nav-link active" th:href="${node.routing + child.routing} + '?menuId=' + ${child.id}">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p th:text="${child.menuName}"></p>
-                                        </a>
-                                        <a th:if="${(node.routing + child.routing) != (firstRouting + secondRouting)}" class="nav-link" th:href="${node.routing + child.routing} + '?menuId=' + ${child.id}">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p th:text="${child.menuName}"></p>
-                                        </a>
-                                    </li>
-                                </div>
-
-                            </ul>
-                        </li>
-                    </div>
-                </ul>
-            </nav>
         </div>
+
+        <!-- 左侧搜索 -->
+        <div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="搜索" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 菜单 -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu"
+                data-accordion="false">
+                <!--/*@thymesVar id="nodeList" type="java.util.List"*/-->
+                <div th:each="node : ${nodeList}">
+                    <li class="nav-item menu-open" th:if="${node.whetherShow == 1}">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-copy"></i>
+                            <p th:text="${node.menuName}"></p>
+                            <i class="right fas fa-angle-left"></i>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <div th:each="child : ${node.children}">
+                                <li class="nav-item" th:if="${child.whetherShow == 1}">
+                                    <a th:if="${(node.routing + child.routing) == (firstRouting + secondRouting)}"
+                                       class="nav-link active"
+                                       th:href="${node.routing + child.routing} + '?menuId=' + ${child.id}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p th:text="${child.menuName}"></p>
+                                    </a>
+                                    <a th:if="${(node.routing + child.routing) != (firstRouting + secondRouting)}"
+                                       class="nav-link"
+                                       th:href="${node.routing + child.routing} + '?menuId=' + ${child.id}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p th:text="${child.menuName}"></p>
+                                    </a>
+                                </li>
+                            </div>
+
+                        </ul>
+                    </li>
+                </div>
+            </ul>
+        </nav>
+    </div>
 </aside>
 </body>
 </html>

@@ -1,19 +1,19 @@
 /** ## jquery.flot.canvaswrapper
 
-This plugin contains the function for creating and manipulating both the canvas
-layers and svg layers.
+ This plugin contains the function for creating and manipulating both the canvas
+ layers and svg layers.
 
-The Canvas object is a wrapper around an HTML5 canvas tag.
-The constructor Canvas(cls, container) takes as parameters cls,
-the list of classes to apply to the canvas adnd the containter,
-element onto which to append the canvas. The canvas operations
-don't work unless the canvas is attached to the DOM.
+ The Canvas object is a wrapper around an HTML5 canvas tag.
+ The constructor Canvas(cls, container) takes as parameters cls,
+ the list of classes to apply to the canvas adnd the containter,
+ element onto which to append the canvas. The canvas operations
+ don't work unless the canvas is attached to the DOM.
 
-### jquery.canvaswrapper.js API functions
-*/
+ ### jquery.canvaswrapper.js API functions
+ */
 
-(function($) {
-    var Canvas = function(cls, container) {
+(function ($) {
+    var Canvas = function (cls, container) {
         var element = container.getElementsByClassName(cls)[0];
 
         if (!element) {
@@ -55,14 +55,14 @@ don't work unless the canvas is attached to the DOM.
     }
 
     /**
-    - resize(width, height)
+     - resize(width, height)
 
      Resizes the canvas to the given dimensions.
      The width represents the new width of the canvas, meanwhile the height
      is the new height of the canvas, both of them in pixels.
-    */
+     */
 
-    Canvas.prototype.resize = function(width, height) {
+    Canvas.prototype.resize = function (width, height) {
         var minSize = 10;
         width = width < minSize ? minSize : width;
         height = height < minSize ? minSize : height;
@@ -105,20 +105,20 @@ don't work unless the canvas is attached to the DOM.
     };
 
     /**
-    - clear()
+     - clear()
 
      Clears the entire canvas area, not including any overlaid HTML text
-    */
-    Canvas.prototype.clear = function() {
+     */
+    Canvas.prototype.clear = function () {
         this.context.clearRect(0, 0, this.width, this.height);
     };
 
     /**
-    - render()
+     - render()
 
      Finishes rendering the canvas, including managing the text overlay.
-    */
-    Canvas.prototype.render = function() {
+     */
+    Canvas.prototype.render = function () {
         var cache = this._textCache;
 
         // For each text layer, add elements marked as active that haven't
@@ -176,13 +176,13 @@ don't work unless the canvas is attached to the DOM.
     };
 
     /**
-    - getSVGLayer(classes)
+     - getSVGLayer(classes)
 
      Creates (if necessary) and returns the SVG overlay container.
      The classes string represents the string of space-separated CSS classes
      used to uniquely identify the text layer. It return the svg-layer div.
-    */
-    Canvas.prototype.getSVGLayer = function(classes) {
+     */
+    Canvas.prototype.getSVGLayer = function (classes) {
         var layer = this.SVG[classes];
 
         // Create the SVG layer if it doesn't exist
@@ -227,7 +227,7 @@ don't work unless the canvas is attached to the DOM.
     };
 
     /**
-    - getTextInfo(layer, text, font, angle, width)
+     - getTextInfo(layer, text, font, angle, width)
 
      Creates (if necessary) and returns a text info object.
      The object looks like this:
@@ -238,10 +238,10 @@ don't work unless the canvas is attached to the DOM.
          element //The HTML div containing the text.
          positions //Array of positions at which this text is drawn.
       }
-      ```
-      The positions array contains objects that look like this:
-      ```js
-      {
+     ```
+     The positions array contains objects that look like this:
+     ```js
+     {
          active //Flag indicating whether the text should be visible.
          rendered //Flag indicating whether the text is currently visible.
          element //The HTML div containing the text.
@@ -249,14 +249,14 @@ don't work unless the canvas is attached to the DOM.
          x //X coordinate at which to draw the text.
          y //Y coordinate at which to draw the text.
       }
-      ```
-      Each position after the first receives a clone of the original element.
-      The idea is that that the width, height, and general 'identity' of the
-      text is constant no matter where it is placed; the placements are a
-      secondary property.
+     ```
+     Each position after the first receives a clone of the original element.
+     The idea is that that the width, height, and general 'identity' of the
+     text is constant no matter where it is placed; the placements are a
+     secondary property.
 
-      Canvas maintains a cache of recently-used text info objects; getTextInfo
-      either returns the cached element or creates a new entry.
+     Canvas maintains a cache of recently-used text info objects; getTextInfo
+     either returns the cached element or creates a new entry.
 
      The layer parameter is string of space-separated CSS classes uniquely
      identifying the layer containing this text.
@@ -267,8 +267,8 @@ don't work unless the canvas is attached to the DOM.
      it will be implemented in the future.
      The last parameter is the Maximum width of the text before it wraps.
      The method returns a text info object.
-    */
-    Canvas.prototype.getTextInfo = function(layer, text, font, angle, width) {
+     */
+    Canvas.prototype.getTextInfo = function (layer, text, font, angle, width) {
         var textStyle, layerCache, styleCache, info;
 
         // Cast the value to a string, in case we were given a number or such
@@ -345,17 +345,17 @@ don't work unless the canvas is attached to the DOM.
         return info;
     };
 
-    function updateTransforms (element, transforms) {
+    function updateTransforms(element, transforms) {
         element.transform.baseVal.clear();
         if (transforms) {
-            transforms.forEach(function(t) {
+            transforms.forEach(function (t) {
                 element.transform.baseVal.appendItem(t);
             });
         }
     }
 
     /**
-    - addText (layer, x, y, text, font, angle, width, halign, valign, transforms)
+     - addText (layer, x, y, text, font, angle, width, halign, valign, transforms)
 
      Adds a text string to the canvas text overlay.
      The text isn't drawn immediately; it is marked as rendering, which will
@@ -365,8 +365,8 @@ don't work unless the canvas is attached to the DOM.
      identifying the layer containing this text.
      X and Y represents the X and Y coordinate at which to draw the text.
      and text is the string to draw
-    */
-    Canvas.prototype.addText = function(layer, x, y, text, font, angle, width, halign, valign, transforms) {
+     */
+    Canvas.prototype.addText = function (layer, x, y, text, font, angle, width, halign, valign, transforms) {
         var info = this.getTextInfo(layer, text, font, angle, width),
             positions = info.positions;
 
@@ -448,7 +448,7 @@ don't work unless the canvas is attached to the DOM.
         updateTransforms(position.element, transforms);
     };
 
-    var addTspanElements = function(text, element, x) {
+    var addTspanElements = function (text, element, x) {
         var lines = text.split('<br>'),
             tspan, i, offset;
 
@@ -467,24 +467,24 @@ don't work unless the canvas is attached to the DOM.
     }
 
     /**
-    - removeText (layer, x, y, text, font, angle)
+     - removeText (layer, x, y, text, font, angle)
 
-      The function removes one or more text strings from the canvas text overlay.
-      If no parameters are given, all text within the layer is removed.
+     The function removes one or more text strings from the canvas text overlay.
+     If no parameters are given, all text within the layer is removed.
 
-      Note that the text is not immediately removed; it is simply marked as
-      inactive, which will result in its removal on the next render pass.
-      This avoids the performance penalty for 'clear and redraw' behavior,
-      where we potentially get rid of all text on a layer, but will likely
-      add back most or all of it later, as when redrawing axes, for example.
+     Note that the text is not immediately removed; it is simply marked as
+     inactive, which will result in its removal on the next render pass.
+     This avoids the performance penalty for 'clear and redraw' behavior,
+     where we potentially get rid of all text on a layer, but will likely
+     add back most or all of it later, as when redrawing axes, for example.
 
-      The layer is a string of space-separated CSS classes uniquely
-      identifying the layer containing this text. The following parameter are
-      X and Y coordinate of the text.
-      Text is the string to remove, while the font is either a string of space-separated CSS
-      classes or a font-spec object, defining the text's font and style.
+     The layer is a string of space-separated CSS classes uniquely
+     identifying the layer containing this text. The following parameter are
+     X and Y coordinate of the text.
+     Text is the string to remove, while the font is either a string of space-separated CSS
+     classes or a font-spec object, defining the text's font and style.
      */
-    Canvas.prototype.removeText = function(layer, x, y, text, font, angle) {
+    Canvas.prototype.removeText = function (layer, x, y, text, font, angle) {
         var info, htmlYCoord;
         if (text == null) {
             var layerCache = this._textCache[layer];
@@ -495,7 +495,7 @@ don't work unless the canvas is attached to the DOM.
                         for (var key in styleCache) {
                             if (hasOwnProperty.call(styleCache, key)) {
                                 var positions = styleCache[key].positions;
-                                positions.forEach(function(position) {
+                                positions.forEach(function (position) {
                                     position.active = false;
                                 });
                             }
@@ -506,7 +506,7 @@ don't work unless the canvas is attached to the DOM.
         } else {
             info = this.getTextInfo(layer, text, font, angle);
             positions = info.positions;
-            positions.forEach(function(position) {
+            positions.forEach(function (position) {
                 htmlYCoord = y + 0.75 * info.height;
                 if (position.x === x && position.y === htmlYCoord && position.text === text) {
                     position.active = false;
@@ -516,14 +516,14 @@ don't work unless the canvas is attached to the DOM.
     };
 
     /**
-    - clearCache()
+     - clearCache()
 
      Clears the cache used to speed up the text size measurements.
      As an (unfortunate) side effect all text within the text Layer is removed.
      Use this function before plot.setupGrid() and plot.draw() if the plot just
      became visible or the styles changed.
-    */
-    Canvas.prototype.clearCache = function() {
+     */
+    Canvas.prototype.clearCache = function () {
         var cache = this._textCache;
         for (var layerKey in cache) {
             if (hasOwnProperty.call(cache, layerKey)) {
@@ -532,7 +532,8 @@ don't work unless the canvas is attached to the DOM.
                     layer.removeChild(layer.firstChild);
                 }
             }
-        };
+        }
+        ;
 
         this._textCache = {};
     };

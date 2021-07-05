@@ -63,8 +63,8 @@ public class TagApi {
 
         if (StringUtils.isNotBlank(tagPageRequest.getDateRange())) {
             String[] dates = tagPageRequest.getDateRange().split("~");
-            start = LocalDateTime.parse(dates[0].trim() +" 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            end = LocalDateTime.parse(dates[1].trim() +" 23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            start = LocalDateTime.parse(dates[0].trim() + " 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            end = LocalDateTime.parse(dates[1].trim() + " 23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
 
         Page<Tag> page = new Page<>(tagPageRequest.getCurrent(), tagPageRequest.getSize());
@@ -91,7 +91,7 @@ public class TagApi {
     }
 
     @ApiOperation(value = "详情")
-    @ApiImplicitParam(name = "id",value = "主键",required = true, dataType = "Long", dataTypeClass = Long.class)
+    @ApiImplicitParam(name = "id", value = "主键", required = true, dataType = "Long", dataTypeClass = Long.class)
     @PostMapping("/detail")
     public TagResponse detail(@RequestParam("id") @NotBlank(message = "id不得为空") Long id) {
         log.info("请求：{}", id);
@@ -112,7 +112,7 @@ public class TagApi {
 
     @ApiOperation(value = "新增")
     @PostMapping("/add")
-    public void add(@RequestBody TagRequest  tagRequest) {
+    public void add(@RequestBody TagRequest tagRequest) {
         log.info("请求：{}", tagRequest);
         Tag tag = TagRequestConverter.INSTANCE.sourceToTarget(tagRequest);
         tagService.addTag(tag);
@@ -120,14 +120,14 @@ public class TagApi {
 
     @ApiOperation(value = "更新")
     @PostMapping("/update")
-    public void update(@RequestBody TagRequest  tagRequest) {
+    public void update(@RequestBody TagRequest tagRequest) {
         log.info("请求：{}", tagRequest);
         Tag tag = TagRequestConverter.INSTANCE.sourceToTarget(tagRequest);
         tagService.updateTag(tag);
     }
 
     @ApiOperation(value = "删除")
-    @ApiImplicitParam(name = "id",value = "主键",required = true, dataType = "Long", dataTypeClass = Long.class)
+    @ApiImplicitParam(name = "id", value = "主键", required = true, dataType = "Long", dataTypeClass = Long.class)
     @PostMapping("/delete")
     public void delete(@RequestParam("id") @NotBlank(message = "id不得为空") Long id) {
         log.info("请求：{}", id);

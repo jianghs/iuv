@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 安全拦截
+     *
      * @param http httpSecurity
      * @throws Exception 异常
      */
@@ -74,8 +75,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/resources/r1").hasAuthority("2")
 //                .antMatchers("/resources/r2").hasAuthority("3")
                 // 静态文件无需权限访问
-                .antMatchers( "/css/**", "/fonts/**","/img/**","/js/**","/plugins/**").permitAll()
-                .antMatchers( "/register").permitAll()
+                .antMatchers("/css/**", "/fonts/**", "/img/**", "/js/**", "/plugins/**").permitAll()
+                .antMatchers("/register").permitAll()
                 // 其他接口需要登录后才能访问
                 .anyRequest().authenticated()
                 .and();

@@ -29,6 +29,7 @@ public class MybatisGenerator {
     private static String USERNAME = "root";
     private static String PASSWORD = "Jianghs@123";
     private List<String> tables = new ArrayList<>();
+
     /**
      * <p>
      * 读取控制台内容
@@ -87,7 +88,7 @@ public class MybatisGenerator {
         // 如果模板引擎是 freemarker
 //        String templatePath = "/templates/mapper.xml.ftl";
         // 如果模板引擎是 velocity
-         String templatePath = "/templates/mapper.xml.vm";
+        String templatePath = "/templates/mapper.xml.vm";
 
         // 自定义输出配置
         List<FileOutConfig> focList = new ArrayList<>();

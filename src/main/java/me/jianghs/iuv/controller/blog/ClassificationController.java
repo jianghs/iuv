@@ -50,12 +50,13 @@ public class ClassificationController {
     private MenuContext menuContext;
     @Autowired
     private IClassificationService classificationService;
+
     /**
      * 分类页面
      */
     @PreAuthorize("hasAuthority('classification_management')")
     @RequestMapping("")
-    public String classification(Model model, @ModelAttribute(value = "classificationQuery")ClassificationQuery query) {
+    public String classification(Model model, @ModelAttribute(value = "classificationQuery") ClassificationQuery query) {
         pageContext.addPageCommonElements(model);
         return "/blog/classification";
     }
@@ -138,6 +139,7 @@ public class ClassificationController {
 
     /**
      * 分页
+     *
      * @param classificationPageQuery
      * @return
      */
@@ -153,8 +155,8 @@ public class ClassificationController {
 
         if (StringUtils.isNotBlank(classificationPageQuery.getDateRange())) {
             String[] dates = classificationPageQuery.getDateRange().split("~");
-            start = LocalDateTime.parse(dates[0].trim() +" 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            end = LocalDateTime.parse(dates[1].trim() +" 23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            start = LocalDateTime.parse(dates[0].trim() + " 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            end = LocalDateTime.parse(dates[1].trim() + " 23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
 
         Page<Classification> page = new Page<>(classificationPageQuery.getCurrent(), classificationPageQuery.getSize());

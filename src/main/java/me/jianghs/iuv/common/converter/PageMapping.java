@@ -16,6 +16,7 @@ public interface PageMapping<SOURCE, TARGET> extends BaseMapping<SOURCE, TARGET>
 
     /**
      * 分页复制
+     *
      * @param source
      * @return
      */

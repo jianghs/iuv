@@ -18,6 +18,7 @@ import java.util.Objects;
 public class SpringSecurityContext {
     /**
      * 从授权信息中获取用户名
+     *
      * @return 用户名
      */
     public String getUserNameFromAuthentication() {

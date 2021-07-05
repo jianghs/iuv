@@ -25,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * LettuceRedisConfig
+ *
  * @author jianghs430
  */
 @Configuration

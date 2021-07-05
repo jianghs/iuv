@@ -17,6 +17,7 @@ import java.util.List;
 public interface IUserService extends IService<User> {
     /**
      * 根据用户名查询用户下所有菜单
+     *
      * @param username 用户名
      * @return 菜单列表
      */

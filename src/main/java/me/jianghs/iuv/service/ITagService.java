@@ -18,6 +18,7 @@ public interface ITagService extends IService<Tag> {
 
     /**
      * 详情
+     *
      * @param id 主键
      * @return 根据主键返回的结果
      */
@@ -25,6 +26,7 @@ public interface ITagService extends IService<Tag> {
 
     /**
      * 新增
+     *
      * @param tag 入参
      * @return 出参
      */
@@ -32,6 +34,7 @@ public interface ITagService extends IService<Tag> {
 
     /**
      * 更新
+     *
      * @param tag
      * @return 更新
      */
@@ -39,12 +42,14 @@ public interface ITagService extends IService<Tag> {
 
     /**
      * 删除
+     *
      * @param id
      */
     void delete(Long id);
 
     /**
      * 标签列表
+     *
      * @param tagQuery
      * @return
      */

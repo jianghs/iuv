@@ -22,6 +22,7 @@ import java.io.IOException;
 @Component
 public class AppAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response,
                           Authentication authentication) throws IOException, ServletException {

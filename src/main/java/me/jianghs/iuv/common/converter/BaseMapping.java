@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 public interface BaseMapping<SOURCE, TARGET> {
     /**
      * 映射同名属性
+     *
      * @param var1
      * @return
      */
@@ -25,6 +26,7 @@ public interface BaseMapping<SOURCE, TARGET> {
 
     /**
      * 反向，映射同名属性
+     *
      * @param var1
      * @return
      */
@@ -33,6 +35,7 @@ public interface BaseMapping<SOURCE, TARGET> {
 
     /**
      * 映射同名属性，集合形式
+     *
      * @param var1
      * @return
      */
@@ -41,6 +44,7 @@ public interface BaseMapping<SOURCE, TARGET> {
 
     /**
      * 反向，映射同名属性，集合形式
+     *
      * @param var1
      * @return
      */
@@ -49,6 +53,7 @@ public interface BaseMapping<SOURCE, TARGET> {
 
     /**
      * 映射同名属性，集合流形式
+     *
      * @param stream
      * @return
      */
@@ -56,6 +61,7 @@ public interface BaseMapping<SOURCE, TARGET> {
 
     /**
      * 反向，映射同名属性，集合流形式
+     *
      * @param stream
      * @return
      */

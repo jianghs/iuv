@@ -23,11 +23,12 @@ public class IndexController {
     Logger logger = LoggerFactory.getLogger(IndexController.class);
     @Autowired
     private PageContext pageContext;
+
     /**
      * 跳转首页
      */
     @RequestMapping("")
-    public void index1(HttpServletResponse response){
+    public void index1(HttpServletResponse response) {
         try {
             response.sendRedirect("/index");
         } catch (IOException e) {

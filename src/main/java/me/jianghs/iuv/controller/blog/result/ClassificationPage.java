@@ -71,5 +71,4 @@ public class ClassificationPage implements Serializable {
     private Long modifierId;
 
 
-
 }

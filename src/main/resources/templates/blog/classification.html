@@ -66,14 +66,17 @@
                                 <h3 class="card-title">分类列表</h3>
                             </div>
                             <div class="card-body">
-                                <form id="query-form" th:action="@{/blog/classification/query}" th:object="${classificationQuery}">
-                                    <input type="text" style="display: none" class="form-control" placeholder="" id="menuId" name="menuId" th:value="${param.menuId}">
+                                <form id="query-form" th:action="@{/blog/classification/query}"
+                                      th:object="${classificationQuery}">
+                                    <input type="text" style="display: none" class="form-control" placeholder=""
+                                           id="menuId" name="menuId" th:value="${param.menuId}">
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <!-- text input -->
                                             <div class="form-group">
                                                 <label>分类名称</label>
-                                                <input type="text" th:field="*{classificationName}" class="form-control" placeholder="">
+                                                <input type="text" th:field="*{classificationName}" class="form-control"
+                                                       placeholder="">
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
@@ -81,9 +84,12 @@
                                             <div class="form-group">
                                                 <label>分类状态</label>
                                                 <select th:field="*{classificationStatus}" class="form-control">
-                                                    <option th:selected="*{classificationStatus == 0}" th:value="0">全部</option>
-                                                    <option th:selected="*{classificationStatus == 1}" th:value="1">启用</option>
-                                                    <option th:selected="*{classificationStatus == 2}" th:value="2">停用</option>
+                                                    <option th:selected="*{classificationStatus == 0}" th:value="0">全部
+                                                    </option>
+                                                    <option th:selected="*{classificationStatus == 1}" th:value="1">启用
+                                                    </option>
+                                                    <option th:selected="*{classificationStatus == 2}" th:value="2">停用
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -96,7 +102,8 @@
                                                         <i class="far fa-calendar-alt"></i>
                                                       </span>
                                                     </div>
-                                                    <input type="text" th:field="*{dateRange}" class="form-control float-right" id="date-range">
+                                                    <input type="text" th:field="*{dateRange}"
+                                                           class="form-control float-right" id="date-range">
                                                 </div>
                                                 <!-- /.input group -->
                                             </div>
@@ -104,13 +111,17 @@
                                         <div class="col-sm-1">
                                             <div class="form-group">
                                                 <label>&#12288;</label>
-                                                <button type="button" class="btn btn-block btn-primary" id="classification-query">查询</button>
+                                                <button type="button" class="btn btn-block btn-primary"
+                                                        id="classification-query">查询
+                                                </button>
                                             </div>
                                         </div>
                                         <div class="col-sm-1">
                                             <div class="form-group">
                                                 <label>&#12288;</label>
-                                                <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#modal-add">新增</button>
+                                                <button type="button" class="btn btn-block btn-primary"
+                                                        data-toggle="modal" data-target="#modal-add">新增
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -123,7 +134,8 @@
                                                 </div>
                                                 <!-- /.card-header -->
                                                 <div class="card-body">
-                                                    <table id="classification-table" class="table table-bordered table-hover">
+                                                    <table id="classification-table"
+                                                           class="table table-bordered table-hover">
                                                         <thead>
                                                         <tr>
                                                             <th>序号</th>
@@ -168,19 +180,23 @@
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label>分类名称</label>
-                                                <input type="text" class="form-control" placeholder="" id="classificationName" name="classificationName">
+                                                <input type="text" class="form-control" placeholder=""
+                                                       id="classificationName" name="classificationName">
                                             </div>
                                             <div class="form-group">
                                                 <label>分类介绍</label>
-                                                <input type="text" class="form-control" placeholder="" id="introduction" name="introduction">
+                                                <input type="text" class="form-control" placeholder="" id="introduction"
+                                                       name="introduction">
                                             </div>
                                             <div class="form-group">
                                                 <label>排序</label>
-                                                <input type="text" class="form-control" placeholder="" id="classificationOrder" name="classificationOrder">
+                                                <input type="text" class="form-control" placeholder=""
+                                                       id="classificationOrder" name="classificationOrder">
                                             </div>
                                             <div class="form-group">
                                                 <label>优先级</label>
-                                                <input type="text" class="form-control" placeholder="" id="priority" name="priority">
+                                                <input type="text" class="form-control" placeholder="" id="priority"
+                                                       name="priority">
                                             </div>
                                         </div>
                                         <!-- /.card-body -->
@@ -212,26 +228,32 @@
                                     <!-- form start -->
                                     <form id="edit-form" th:action="@{/blog/classification/edit}">
                                         <div class="card-body">
-                                            <input type="text" style="display: none" class="form-control" placeholder="" id="edit-classificationId" name="id">
+                                            <input type="text" style="display: none" class="form-control" placeholder=""
+                                                   id="edit-classificationId" name="id">
                                             <div class="form-group">
                                                 <label>分类名称</label>
-                                                <input type="text" class="form-control" placeholder="" id="edit-classificationName" name="classificationName" disabled>
+                                                <input type="text" class="form-control" placeholder=""
+                                                       id="edit-classificationName" name="classificationName" disabled>
                                             </div>
                                             <div class="form-group">
                                                 <label>分类介绍</label>
-                                                <input type="text" class="form-control" placeholder="" id="edit-introduction" name="introduction">
+                                                <input type="text" class="form-control" placeholder=""
+                                                       id="edit-introduction" name="introduction">
                                             </div>
                                             <div class="form-group">
                                                 <label>排序</label>
-                                                <input type="text" class="form-control" placeholder="" id="edit-classificationOrder" name="classificationOrder">
+                                                <input type="text" class="form-control" placeholder=""
+                                                       id="edit-classificationOrder" name="classificationOrder">
                                             </div>
                                             <div class="form-group">
                                                 <label>优先级</label>
-                                                <input type="text" class="form-control" placeholder="" id="edit-priority" name="priority">
+                                                <input type="text" class="form-control" placeholder=""
+                                                       id="edit-priority" name="priority">
                                             </div>
                                             <div class="form-group">
                                                 <label>分类状态</label>
-                                                <select class="form-control" id="edit-status-selector" name="classificationStatus">
+                                                <select class="form-control" id="edit-status-selector"
+                                                        name="classificationStatus">
                                                     <option value="1">启用</option>
                                                     <option value="2">停用</option>
                                                 </select>
@@ -239,7 +261,8 @@
                                         </div>
                                         <!-- /.card-body -->
                                         <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary" id="edit-submit-button">提交</button>
+                                            <button type="submit" class="btn btn-primary" id="edit-submit-button">提交
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -260,7 +283,8 @@
                             </button>
                         </div>
                         <form id="delete-form" th:action="@{/blog/classification/delete}">
-                            <input type="text" style="display: none" class="form-control" placeholder="" id="delete-classificationId" name="id">
+                            <input type="text" style="display: none" class="form-control" placeholder=""
+                                   id="delete-classificationId" name="id">
                             <div class="modal-body">
                                 <p>是否删除该条记录?</p>
                             </div>
@@ -350,7 +374,7 @@
             }
         });
 
-        let dataCheck = function(formData, jqForm, options) {
+        let dataCheck = function (formData, jqForm, options) {
             const formElement = jqForm[0];              //将jqForm转换为DOM对象
             const classificationName = formElement.classificationName.value;  //访问jqForm的DOM元素
             if (classificationName === '') {
@@ -359,7 +383,7 @@
             }
             return true;
         };
-        let afterCheck = function(responseText, statusText) {
+        let afterCheck = function (responseText, statusText) {
             if (statusText != "success") {
                 if (responseText.status = "403") {
                     toastr.error("权限不足！")
@@ -379,21 +403,21 @@
             }
             return true;
         }
-        let queryCallback = function(responseText, statusText){
+        let queryCallback = function (responseText, statusText) {
             if (!afterCheck(responseText, statusText)) {
                 return false;
             }
-            window.location.href='/blog/classification?menuId='+ $('#menuId').val() +'&classificationName='+ $('#classificationName').val() +'&classificationStatus='+ $('#classificationStatus').val() +'&dateRange=' +$('#date-range').val();
+            window.location.href = '/blog/classification?menuId=' + $('#menuId').val() + '&classificationName=' + $('#classificationName').val() + '&classificationStatus=' + $('#classificationStatus').val() + '&dateRange=' + $('#date-range').val();
         };
-        let callback = function(responseText, statusText){
+        let callback = function (responseText, statusText) {
             if (!afterCheck(responseText, statusText)) {
                 return false;
             }
-            window.location.href='/blog/classification?menuId='+ $('#menuId').val();
+            window.location.href = '/blog/classification?menuId=' + $('#menuId').val();
         };
 
         // 【查询】按钮动作
-        $('#classification-query').click(function() {
+        $('#classification-query').click(function () {
             $('#query-form').ajaxSubmit({
                 success: queryCallback,      //提交后的回调函数
                 error: queryCallback,      //提交后的回调函数
@@ -404,7 +428,7 @@
         });
 
         // 【新增】保存按钮动作
-        $('#add-button').click(function() {
+        $('#add-button').click(function () {
             $('#add-form').ajaxSubmit({
                 beforeSubmit: dataCheck,  //提交前的回调函数
                 success: callback,      //提交后的回调函数
@@ -416,7 +440,7 @@
         });
 
         // 【编辑】保存按钮动作
-        $('#edit-submit-button').click(function() {
+        $('#edit-submit-button').click(function () {
             $('#edit-form').ajaxSubmit({
                 success: callback,      //提交后的回调函数
                 error: callback,      //提交后的回调函数
@@ -427,7 +451,7 @@
         });
 
         // 【删除】保存按钮动作
-        $('#delete-submit-button').click(function() {
+        $('#delete-submit-button').click(function () {
             $('#delete-form').ajaxSubmit({
                 success: callback,      //提交后的回调函数
                 error: callback,      //提交后的回调函数
@@ -486,7 +510,7 @@
 
         //初始化表格
         let pageTable = $("#classification-table").dataTable({
-            language:lang,  //提示信息
+            language: lang,  //提示信息
             autoWidth: false,  //禁用自动调整列宽
             stripeClasses: ["odd", "even"],  //为奇偶行加上样式，兼容不支持CSS伪类的场合
             processing: true,  //隐藏加载提示,自行处理
@@ -505,7 +529,7 @@
                 //封装请求参数
                 let param = {};
                 param.size = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
-                param.current = (data.start / data.length)+1;//当前页码
+                param.current = (data.start / data.length) + 1;//当前页码
                 param.classificationName = $("#classificationName").val();
                 param.classificationStatus = $("#classificationStatus").val();
                 param.dateRange = $("#date-range").val();
@@ -529,34 +553,38 @@
             },
             //列表表头字段
             columns: [
-                { "data": null},
-                { "data": "classificationName"},
-                { "data": "introduction"},
-                { "data": "hits"},
-                { "data": "classificationOrder" },
-                { "data": "priority" },
+                {"data": null},
+                {"data": "classificationName"},
+                {"data": "introduction"},
+                {"data": "hits"},
+                {"data": "classificationOrder"},
+                {"data": "priority"},
                 {
                     "data": "classificationStatus",
                     "render": function (data, type, row, meta) {
                         let content = "";
-                        if (data == "1") {content = "启用";}
-                        if (data == "2") {content = "停用";}
+                        if (data == "1") {
+                            content = "启用";
+                        }
+                        if (data == "2") {
+                            content = "停用";
+                        }
                         return content;
                     }
                 },
-                { "data": "creator" },
-                { "data": "createTime" },
+                {"data": "creator"},
+                {"data": "createTime"},
                 {
                     "data": null,
                     "render": function (data, type, row, meta) {
                         let json = JSON.stringify(row);
                         return data = "<div class=\"margin\">" +
                             "<div class=\"btn-group\">" +
-                            "<button type=\"button\" class=\"btn btn-warning\" id=\"edit-button\" data-toggle=\"modal\" data-target=\"#modal-edit\" data-whatever='"+ json +"'>编辑</button>"+
+                            "<button type=\"button\" class=\"btn btn-warning\" id=\"edit-button\" data-toggle=\"modal\" data-target=\"#modal-edit\" data-whatever='" + json + "'>编辑</button>" +
                             "</div>" +
                             "\n" +
                             "<div class=\"btn-group\">" +
-                            "<button type=\"button\" class=\"btn btn-danger\" id=\"delete-button\" data-toggle=\"modal\" data-target=\"#modal-delete\" data-whatever="+ row.id +">删除</button>" +
+                            "<button type=\"button\" class=\"btn btn-danger\" id=\"delete-button\" data-toggle=\"modal\" data-target=\"#modal-delete\" data-whatever=" + row.id + ">删除</button>" +
                             "</div>" +
                             "</div>";
                     }
@@ -564,13 +592,13 @@
             ]
         }).api();
 
-        pageTable.on('draw.dt',function() {
+        pageTable.on('draw.dt', function () {
             pageTable.column(0, {
                 search: 'applied',
                 order: 'applied'
-            }).nodes().each(function(cell, i) {
+            }).nodes().each(function (cell, i) {
                 //i 从0开始，所以这里先加1
-                i = i+1;
+                i = i + 1;
                 //服务器模式下获取分页信息，使用 DT 提供的 API 直接获取分页信息
                 let page = pageTable.page.info();
                 //当前第几页，从0开始
@@ -578,7 +606,7 @@
                 //每页数据
                 let length = page.length;
                 //行号等于 页数*每页数据长度+行号
-                let columnIndex = (i+pageno*length);
+                let columnIndex = (i + pageno * length);
                 cell.innerHTML = columnIndex;
             });
         });

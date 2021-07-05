@@ -24,6 +24,7 @@ public class RedisUtil {
     private RedisTemplate<String, Object> redisTemplate;
 
     // =============================common============================
+
     /**
      * 指定缓存失效时间
      *

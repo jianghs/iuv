@@ -48,6 +48,7 @@ public class TagController {
     private MenuContext menuContext;
     @Autowired
     private ITagService tagService;
+
     /**
      * 标签页面
      */
@@ -57,6 +58,7 @@ public class TagController {
         pageContext.addPageCommonElements(model);
         return "blog/tag";
     }
+
     /**
      * 查询页面
      */
@@ -133,6 +135,7 @@ public class TagController {
 
     /**
      * 分页
+     *
      * @param tagPageQuery
      * @return
      */
@@ -148,8 +151,8 @@ public class TagController {
 
         if (StringUtils.isNotBlank(tagPageQuery.getDateRange())) {
             String[] dates = tagPageQuery.getDateRange().split("~");
-            start = LocalDateTime.parse(dates[0].trim() +" 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            end = LocalDateTime.parse(dates[1].trim() +" 23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            start = LocalDateTime.parse(dates[0].trim() + " 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            end = LocalDateTime.parse(dates[1].trim() + " 23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
 
         Page<Tag> page = new Page<>(tagPageQuery.getCurrent(), tagPageQuery.getSize());

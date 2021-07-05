@@ -15,17 +15,21 @@ public interface IClassificationService extends IService<Classification> {
 
     /**
      * 删除
+     *
      * @param id 主键
      */
     void delete(Long id);
 
     /**
      * 新增
+     *
      * @param classification
      */
     void addClassification(Classification classification);
+
     /**
      * 编辑
+     *
      * @param classification
      */
     void updateClassification(Classification classification);
